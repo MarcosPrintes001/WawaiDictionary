@@ -16,7 +16,8 @@ class _DictHomePageState extends State<DictHomePage> {
 
   //bool _isLoading = true;
   final _searchWordController = TextEditingController();
-
+  TextEditingController _textEditingController = TextEditingController();
+  String _selectedValue = '';
 
   @override
   void initState() {
@@ -62,61 +63,34 @@ class _DictHomePageState extends State<DictHomePage> {
                               'Option 1',
                               'Option 2',
                               'Option 3',
-                              'Option 4'
+                              'Option 4',
+                              'Option 5',
+                              'Option 6',
+                              'Option 7',
                             ]
                                 .where((String option) => option.contains(
                                     textEditingValue.text.toLowerCase()))
                                 .toList();
                           }, onSelected: (String value) {
-                            setState(() {
-                            });
+                            setState(() {});
                           }, fieldViewBuilder: (BuildContext context,
                               TextEditingController textEditingController,
                               FocusNode focusNode,
                               VoidCallback onFieldSubmitted) {
+                            _textEditingController = textEditingController;
                             return TextField(
                               controller: textEditingController,
                               focusNode: focusNode,
                               decoration: const InputDecoration(
-                                labelText: 'Choose an option',
+                                labelText: 'Escolha uma classe',
                                 border: OutlineInputBorder(),
                               ),
-                              onChanged: (String value) {
-                                // Opções são atualizadas automaticamente conforme o usuário digita
-                                // Faça aqui qualquer processamento adicional desejado
-                              },
                             );
-                          }, optionsViewBuilder: (BuildContext context,
-                              AutocompleteOnSelected<String> onSelected,
-                              Iterable<String> options) {
-                            return Align(
-                              alignment: Alignment.topLeft,
-                              child: Material(
-                                elevation: 4.0,
-                                child: Container(
-                                  constraints: const BoxConstraints(maxHeight: 200),
-                                  child: ListView.builder(
-                                    itemCount: options.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      final String option =
-                                          options.elementAt(index);
-                                      return ListTile(
-                                        title: Text(option),
-                                        onTap: () {
-                                          onSelected(option);
-                                        },
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                            );
-                          })
-                          // ...
+                          }),
                         ],
                       ),
                     ),
+
                     actions: <Widget>[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -157,6 +131,7 @@ class _DictHomePageState extends State<DictHomePage> {
             itemCount: _wordDisplay.length + 1,
             itemBuilder: (context, index) {
               _wordDisplay;
+              return null;
             }),
       ),
       floatingActionButton: FloatingActionButton(
