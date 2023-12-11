@@ -1,6 +1,5 @@
 //Tela onde vai ficar direcionador dicionario ou tradutor
 import 'package:flutter/material.dart';
-import 'package:waiwai_dictionary/screens/dictionary.dart';
 import 'package:waiwai_dictionary/screens/login.dart';
 
 //Tela Para escolher Dicionario OU Tradutor
@@ -29,108 +28,90 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    callDict() {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const DictHomePage(),
-        ),
-      );
-    }
-
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         centerTitle: true,
+        backgroundColor: Colors.grey[200],
 
-        //Welcome text
-        title: const Text("Bem Vindo(a)"),
-        backgroundColor: const Color.fromRGBO(166, 51, 41, 1),
+//Image
+        title: const Image(
+          image: AssetImage("assets/dicName.png"),
+          height: 120,
+          width: 120,
+        ),
       ),
 
-      //Side Bar
+//Side Bar
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
+            
             const DrawerHeader(
-              child: Icon(Icons.home),
+              child: Image(
+                image: AssetImage("assets/tapotaLogo.png"),
+              ),
             ),
 
-            //SideBar Buttons
-            TextButton.icon(
-              onPressed: callDict,
-              icon: const Icon(
-                Icons.menu_book_rounded,
-              ),
-              label: const Text('Dicionario'),
-            ),
-            TextButton.icon(
-              onPressed: (){},
-              icon: const Icon(
-                Icons.cloud_upload_outlined,
-              ),
-              label: const Text('Baixar Traduções'),
-            ),
+//SideBar Buttons
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
 
-            const Spacer(),
+                TextButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.cloud_download_outlined,
+                    color: Colors.black,
+                    size: 37,
+                  ),
+                  label: const Text(
+                    'Atualizar',
+                    style: TextStyle(fontSize: 18, color: Colors.black),
+                  ),
+                ),
 
-            TextButton.icon(
-              onPressed: logout,
-              icon: const Icon(
-                Icons.logout,
-              ),
-              label: const Text('Logout'),
+                TextButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.info_outline_rounded,
+                    color: Colors.black,
+                    size: 37,
+                  ),
+                  label: const Text(
+                    'Sobre',
+                    style: TextStyle(fontSize: 18, color: Colors.black),
+                  ),
+                ),
+
+                TextButton.icon(
+                  onPressed: () {
+                    logout();
+                  },
+                  icon: const Icon(
+                    Icons.logout,
+                    color: Colors.black,
+                    size: 37,
+                  ),
+                  label: const Text(
+                    'Logout',
+                    style: TextStyle(fontSize: 18, color: Colors.black),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
       ),
 
       //App Body
-      body: Center(
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
-          children: [
-            Ink(
-              width: 100,
-              height: 100,
-              decoration: const BoxDecoration(
-                color: Color.fromRGBO(166, 51, 41, 1),
-                shape: BoxShape.rectangle,
-              ),
-
-              //Botão central chamar dicionario
-              child: InkWell(
-                onTap: callDict,
-                child: const Icon(
-                  Icons.menu_book_rounded,
-                  size: 50,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            //Botão Central Tradutor
-            Ink(
-              width: 100,
-              height: 100,
-              decoration: const BoxDecoration(
-                color: Colors.grey,
-                shape: BoxShape.rectangle,
-              ),
-              child: const InkWell(
-                onTap: null,
-                child: Icon(
-                  Icons.translate_rounded,
-                  size: 50,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
+          children: [],
         ),
       ),
     );

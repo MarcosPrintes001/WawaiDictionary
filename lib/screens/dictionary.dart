@@ -14,11 +14,6 @@ class _DictHomePageState extends State<DictHomePage> {
   final List<wordModel> _wordDisplay = <wordModel>[];
   final _scrollController = ScrollController();
 
-  //bool _isLoading = true;
-  final _searchWordController = TextEditingController();
-  TextEditingController _textEditingController = TextEditingController();
-  String _selectedValue = '';
-
   @override
   void initState() {
     // ignore: todo
@@ -34,96 +29,6 @@ class _DictHomePageState extends State<DictHomePage> {
         backgroundColor: const Color.fromRGBO(166, 51, 41, 1),
         elevation: 0.0,
         title: const Text("Dicionario", textAlign: TextAlign.left),
-        actions: [
-          TextButton.icon(
-            onPressed: () {
-              // Adicione a lógica para exibir o popup
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text('Filtro'),
-                    // Adicione o conteúdo do popup aqui
-                    content: SingleChildScrollView(
-                      child: ListBody(
-                        children: <Widget>[
-                          // Adicione os itens do filtro aqui
-                          TextFormField(
-                            controller: _searchWordController,
-                            decoration: const InputDecoration(
-                                label: Text('Palavra'),
-                                hintText: 'Aparaca',
-                                filled: true,
-                                fillColor: Colors.white,
-                                errorStyle: TextStyle(color: Colors.orange)),
-                          ),
-                          Autocomplete(optionsBuilder:
-                              (TextEditingValue textEditingValue) {
-                            return [
-                              'Option 1',
-                              'Option 2',
-                              'Option 3',
-                              'Option 4',
-                              'Option 5',
-                              'Option 6',
-                              'Option 7',
-                            ]
-                                .where((String option) => option.contains(
-                                    textEditingValue.text.toLowerCase()))
-                                .toList();
-                          }, onSelected: (String value) {
-                            setState(() {});
-                          }, fieldViewBuilder: (BuildContext context,
-                              TextEditingController textEditingController,
-                              FocusNode focusNode,
-                              VoidCallback onFieldSubmitted) {
-                            _textEditingController = textEditingController;
-                            return TextField(
-                              controller: textEditingController,
-                              focusNode: focusNode,
-                              decoration: const InputDecoration(
-                                labelText: 'Escolha uma classe',
-                                border: OutlineInputBorder(),
-                              ),
-                            );
-                          }),
-                        ],
-                      ),
-                    ),
-
-                    actions: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(); // Fechar o popup
-                            },
-                            child: const Text('Filtrar'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(); // Fechar o popup
-                            },
-                            child: const Text('Fechar'),
-                          ),
-                        ],
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-            icon: const Icon(
-              color: Colors.white,
-              Icons.search_rounded,
-            ),
-            label: const Text(
-              "filtro",
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ],
       ),
       body: SafeArea(
         child: ListView.builder(
