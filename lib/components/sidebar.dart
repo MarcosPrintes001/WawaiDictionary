@@ -70,9 +70,9 @@ class MySideBar extends StatelessWidget {
               ],
             ),
           ),
-          Divider(),
+          const Divider(),
           Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: SidebarButton(
               onTap: logout,
               text: "Entrar/Registrar-se",
