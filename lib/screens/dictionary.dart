@@ -53,31 +53,3 @@ class _DictHomePageState extends State<DictHomePage> {
     );
   }
 }
-//   _searchBar() {
-//     return Padding(
-//       padding: const EdgeInsets.all(12.0),
-//       child: TextField(
-//         style: GoogleFonts.openSans(
-//           color: Colors.black,
-//         ),
-//         autofocus: false,
-//         onChanged: (searchText) {
-//           searchText = searchText.toLowerCase();
-//           setState(() {
-//             _wordDisplay = _words.where((u) {
-//               var ptWord = u.meaningPort.toLowerCase();
-//               var waiWord = u.meaningWaiwai.toLowerCase();
-//               return ptWord.contains(searchText) ||
-//                   waiWord.contains(searchText);
-//             }).toList();
-//           });
-//         },
-//         decoration: const InputDecoration(
-//           border: OutlineInputBorder(),
-//           prefixIcon: Icon(Icons.search),
-//           hintText: 'Buscar Palavras',
-//         ),
-//       ),
-//     );
-//   }
-// }

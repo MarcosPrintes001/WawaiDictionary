@@ -1,119 +1,157 @@
-//Tela onde vai ficar direcionador dicionario ou tradutor
 import 'package:flutter/material.dart';
-import 'package:waiwai_dictionary/screens/login.dart';
+import 'package:waiwai_dictionary/components/appBar.dart';
+import 'package:waiwai_dictionary/components/sidebar.dart';
 
-//Tela Para escolher Dicionario OU Tradutor
 class HomePage extends StatefulWidget {
   const HomePage({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  final ScrollController _scrollController = ScrollController();
+  bool _showArrowUpButton = false;
+
   @override
-  Widget build(BuildContext context) {
-    //Chamar dicionario
+  void initState() {
+    super.initState();
 
-    //Deslogar do sistema
-    logout() {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const LoginPage(),
-        ),
-        (route) => false, // Remove todas as rotas existentes da pilha
-      );
-    }
+    _scrollController.addListener(() {
+      if (_scrollController.offset >= 200) {
+        setState(() {
+          _showArrowUpButton = true;
+        });
+      } else {
+        setState(() {
+          _showArrowUpButton = false;
+        });
+      }
+    });
+  }
 
-    return Scaffold(
-      backgroundColor: Colors.grey[200],
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.grey[200],
-
-//Image
-        title: const Image(
-          image: AssetImage("assets/dicName.png"),
-          height: 120,
-          width: 120,
-        ),
-      ),
-
-//Side Bar
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            
-            const DrawerHeader(
-              child: Image(
-                image: AssetImage("assets/tapotaLogo.png"),
-              ),
-            ),
-
-//SideBar Buttons
-            Column(
+  // Método para exibir o modal de filtro
+  void _showFilterModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-
-                TextButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.cloud_download_outlined,
-                    color: Colors.black,
-                    size: 37,
-                  ),
-                  label: const Text(
-                    'Atualizar',
-                    style: TextStyle(fontSize: 18, color: Colors.black),
-                  ),
+                // Opção para o usuário escrever
+                const TextField(
+                  decoration: InputDecoration(labelText: 'Aparaca....'),
                 ),
-
-                TextButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.info_outline_rounded,
-                    color: Colors.black,
-                    size: 37,
-                  ),
-                  label: const Text(
-                    'Sobre',
-                    style: TextStyle(fontSize: 18, color: Colors.black),
-                  ),
-                ),
-
-                TextButton.icon(
-                  onPressed: () {
-                    logout();
+                const SizedBox(height: 16),
+                // Opção com AutoComplete
+                Autocomplete<String>(
+                  optionsBuilder: (TextEditingValue textEditingValue) {
+                    // Lógica para fornecer opções de AutoComplete
+                    // Pode ser uma lista de strings ou qualquer outro tipo de dados
+                    const List<String> options = [
+                      'Animal',
+                      'Frutas',
+                      'Sentimento'
+                    ];
+                    return options
+                        .where((String option) =>
+                            option.contains(textEditingValue.text.toLowerCase()))
+                        .toList();
                   },
-                  icon: const Icon(
-                    Icons.logout,
-                    color: Colors.black,
-                    size: 37,
-                  ),
-                  label: const Text(
-                    'Logout',
-                    style: TextStyle(fontSize: 18, color: Colors.black),
-                  ),
+                  onSelected: (String selectedOption) {
+                    // Lógica ao selecionar uma opção do AutoComplete
+          
+                    // ignore: avoid_print
+                    print('Selected: $selectedOption');
+                  },
                 ),
+                const SizedBox(height: 20,),
+                TextButton(onPressed: () {}, child: const Text("Filtrar"))
               ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
+    );
+  }
 
-      //App Body
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: [],
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      appBar: MyAppBar(),
+      drawer: const MySideBar(),
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (scrollNotification) {
+          if (scrollNotification is ScrollEndNotification) {
+            if (_scrollController.offset >= 200) {
+              setState(() {
+                _showArrowUpButton = true;
+              });
+            } else {
+              setState(() {
+                _showArrowUpButton = false;
+              });
+            }
+          }
+          return true;
+        },
+        child: ListView.builder(
+          controller: _scrollController,
+          itemCount: 50,
+          itemBuilder: (context, index) => ListTile(
+            title: Text('Item $index'),
+          ),
         ),
       ),
+      floatingActionButton: _showArrowUpButton
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 30),
+                  child: AnimatedOpacity(
+                    opacity: _showArrowUpButton ? 1.0 : 0.0,
+                    duration: const Duration(milliseconds: 500),
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        _showFilterModal(context);
+                      },
+                      child: const Icon(Icons.filter_list),
+                    ),
+                  ),
+                ),
+                FloatingActionButton(
+                  onPressed: () {
+                    _scrollController.animateTo(
+                      0,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeInOut,
+                    );
+                  },
+                  child: const Icon(Icons.arrow_upward),
+                ),
+              ],
+            )
+          : FloatingActionButton(
+              onPressed: () {
+                _showFilterModal(context);
+              },
+              child: const Icon(
+                Icons.filter_list,
+              ),
+            ),
     );
   }
 }
