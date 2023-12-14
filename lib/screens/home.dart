@@ -1,119 +1,113 @@
-//Tela onde vai ficar direcionador dicionario ou tradutor
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:waiwai_dictionary/components/appBar.dart';
+import 'package:waiwai_dictionary/components/sidebar.dart';
+import 'package:waiwai_dictionary/components/sidebar_buttons.dart';
+import 'package:waiwai_dictionary/screens/about.dart';
 import 'package:waiwai_dictionary/screens/login.dart';
 
-//Tela Para escolher Dicionario OU Tradutor
 class HomePage extends StatefulWidget {
   const HomePage({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  final ScrollController _scrollController = ScrollController();
+  bool _showArrowUpButton = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController.addListener(() {
+      if (_scrollController.offset >= 200) {
+        setState(() {
+          _showArrowUpButton = true;
+        });
+      } else {
+        setState(() {
+          _showArrowUpButton = false;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    //Chamar dicionario
-
-    //Deslogar do sistema
-    logout() {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const LoginPage(),
-        ),
-        (route) => false, // Remove todas as rotas existentes da pilha
-      );
-    }
-
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.grey[200],
-
-//Image
-        title: const Image(
-          image: AssetImage("assets/dicName.png"),
-          height: 120,
-          width: 120,
+      appBar: MyAppBar(),
+      drawer: const MySideBar(),
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (scrollNotification) {
+          if (scrollNotification is ScrollEndNotification) {
+            if (_scrollController.offset >= 200) {
+              setState(() {
+                _showArrowUpButton = true;
+              });
+            } else {
+              setState(() {
+                _showArrowUpButton = false;
+              });
+            }
+          }
+          return true;
+        },
+        child: ListView.builder(
+          controller: _scrollController,
+          itemCount: 50,
+          itemBuilder: (context, index) => ListTile(
+            title: Text('Item $index'),
+          ),
         ),
       ),
-
-//Side Bar
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            
-            const DrawerHeader(
-              child: Image(
-                image: AssetImage("assets/tapotaLogo.png"),
-              ),
-            ),
-
-//SideBar Buttons
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      floatingActionButton: _showArrowUpButton
+          ? Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-
-                TextButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.cloud_download_outlined,
-                    color: Colors.black,
-                    size: 37,
-                  ),
-                  label: const Text(
-                    'Atualizar',
-                    style: TextStyle(fontSize: 18, color: Colors.black),
-                  ),
-                ),
-
-                TextButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.info_outline_rounded,
-                    color: Colors.black,
-                    size: 37,
-                  ),
-                  label: const Text(
-                    'Sobre',
-                    style: TextStyle(fontSize: 18, color: Colors.black),
+                Padding(
+                  padding: const EdgeInsets.only(left: 30),
+                  child: AnimatedOpacity(
+                    opacity: _showArrowUpButton ? 1.0 : 0.0,
+                    duration: const Duration(milliseconds: 500),
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        // Lógica para o botão de filtro
+                      },
+                      child: const Icon(Icons.filter_list),
+                    ),
                   ),
                 ),
-
-                TextButton.icon(
+                FloatingActionButton(
                   onPressed: () {
-                    logout();
+                    _scrollController.animateTo(
+                      0,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeInOut,
+                    );
                   },
-                  icon: const Icon(
-                    Icons.logout,
-                    color: Colors.black,
-                    size: 37,
-                  ),
-                  label: const Text(
-                    'Logout',
-                    style: TextStyle(fontSize: 18, color: Colors.black),
-                  ),
+                  child: const Icon(Icons.arrow_upward),
                 ),
               ],
+            )
+          : FloatingActionButton(
+              onPressed: () {
+                // Lógica para o botão de filtro
+              },
+              child: const Icon(
+                Icons.filter_list,
+              ),
             ),
-          ],
-        ),
-      ),
-
-      //App Body
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: [],
-        ),
-      ),
     );
   }
 }
