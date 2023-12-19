@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:waiwai_dictionary/components/appBar.dart';
 import 'package:waiwai_dictionary/components/sidebar.dart';
+import 'package:waiwai_dictionary/components/modal.dart';
+import 'package:waiwai_dictionary/components/word.dart';
+import 'package:waiwai_dictionary/screens/word.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -32,54 +35,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  // Método para exibir o modal de filtro
-  void _showFilterModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Opção para o usuário escrever
-                const TextField(
-                  decoration: InputDecoration(labelText: 'Aparaca....'),
-                ),
-                const SizedBox(height: 16),
-                // Opção com AutoComplete
-                Autocomplete<String>(
-                  optionsBuilder: (TextEditingValue textEditingValue) {
-                    // Lógica para fornecer opções de AutoComplete
-                    // Pode ser uma lista de strings ou qualquer outro tipo de dados
-                    const List<String> options = [
-                      'Animal',
-                      'Frutas',
-                      'Sentimento'
-                    ];
-                    return options
-                        .where((String option) =>
-                            option.contains(textEditingValue.text.toLowerCase()))
-                        .toList();
-                  },
-                  onSelected: (String selectedOption) {
-                    // Lógica ao selecionar uma opção do AutoComplete
-          
-                    // ignore: avoid_print
-                    print('Selected: $selectedOption');
-                  },
-                ),
-                const SizedBox(height: 20,),
-                TextButton(onPressed: () {}, child: const Text("Filtrar"))
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   @override
   void dispose() {
     _scrollController.dispose();
@@ -109,9 +64,17 @@ class _HomePageState extends State<HomePage> {
         },
         child: ListView.builder(
           controller: _scrollController,
-          itemCount: 50,
+          itemCount: 30,
           itemBuilder: (context, index) => ListTile(
-            title: Text('Item $index'),
+            title: WordComponent(onTap: () {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const WordPage(),
+                ),
+                (route) => false,
+              );
+            }),
           ),
         ),
       ),
@@ -126,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                     duration: const Duration(milliseconds: 500),
                     child: FloatingActionButton(
                       onPressed: () {
-                        _showFilterModal(context);
+                        ShowFilterModal(context);
                       },
                       child: const Icon(Icons.filter_list),
                     ),
@@ -146,7 +109,7 @@ class _HomePageState extends State<HomePage> {
             )
           : FloatingActionButton(
               onPressed: () {
-                _showFilterModal(context);
+                ShowFilterModal(context);
               },
               child: const Icon(
                 Icons.filter_list,

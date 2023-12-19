@@ -51,21 +51,30 @@ class MySideBar extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+
               children: [
-                SidebarButton(
-                  onTap: callDict,
-                  text: "Dicionário",
-                  icone: FontAwesomeIcons.bookAtlas,
-                ),
-                SidebarButton(
-                  onTap: () {},
-                  text: "Atualizar",
-                  icone: Icons.cloud_download_outlined,
-                ),
-                SidebarButton(
-                  onTap: callAbout,
-                  text: "Sobre",
-                  icone: Icons.info_outline_rounded,
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SidebarButton(
+                        onTap: callDict,
+                        text: "Dicionário",
+                        icone: Icons.language_outlined, //melhorar Icone
+                      ),
+                      SidebarButton(
+                        onTap: () {},
+                        text: "Atualizar",
+                        icone: Icons.cloud_download_outlined,
+                      ),
+                      SidebarButton(
+                        onTap: callAbout,
+                        text: "Sobre",
+                        icone: Icons.info_outline_rounded,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -73,10 +82,15 @@ class MySideBar extends StatelessWidget {
           const Divider(),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: SidebarButton(
-              onTap: logout,
-              text: "Entrar/Registrar-se",
-              icone: FontAwesomeIcons.circleUser,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SidebarButton(
+                  onTap: logout,
+                  text: "Entrar/Registrar-se",
+                  icone: FontAwesomeIcons.circleUser,
+                ),
+              ],
             ),
           ),
         ],

@@ -130,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 12,
                     ),
 
-                    //BOTÂO LOGAR
+//BOTÂO LOGAR
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
@@ -165,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 10,
                     ),
 
-                    //REGISTRAR AGORA
+//REGISTRAR AGORA
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,

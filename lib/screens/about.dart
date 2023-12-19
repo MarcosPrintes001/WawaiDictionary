@@ -5,7 +5,6 @@ import 'package:waiwai_dictionary/components/appBar.dart';
 import 'package:waiwai_dictionary/components/cardMember.dart';
 import 'package:waiwai_dictionary/components/sidebar.dart';
 
-
 class Sobre extends StatefulWidget {
   const Sobre({super.key});
 
@@ -36,9 +35,16 @@ class _SobreState extends State<Sobre> {
                     height: 150,
                     width: 150,
                   ),
-                  const Text("“Traduza e se comunique com praticidade!”"),
                   const Text(
-                    """Economize tempo com as suas traduções e concentre-se nas tarefas que realmente importam. Com o WaiwaiTapota, você tem um repertório de palavras da língua indígena WaiWai para o português!""",
+                    "“Traduza e se comunique com praticidade!”",
+                    textAlign: TextAlign.center,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      """Economize tempo com as suas traduções e concentre-se nas tarefas que realmente importam. Com o WaiwaiTapota, você tem um repertório de palavras da língua indígena WaiWai para o português!""",
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                   const Divider(),
                   const Text("Equipe"),

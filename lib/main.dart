@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:waiwai_dictionary/screens/about.dart';
 import 'package:waiwai_dictionary/screens/home.dart';
 import 'package:waiwai_dictionary/screens/login.dart';
+import 'package:waiwai_dictionary/screens/word.dart';
 
 //Função principal Flutter
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Sobre(),
+      home: HomePage(),
     );
   }
 
