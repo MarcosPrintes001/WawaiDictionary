@@ -47,7 +47,10 @@ class _SobreState extends State<Sobre> {
                     ),
                   ),
                   const Divider(),
-                  const Text("Equipe"),
+                  const Text(
+                    "Equipe",
+                    style: TextStyle(fontFamily: "Nee"),
+                  ),
                   TeamPage(),
                 ],
               ),
