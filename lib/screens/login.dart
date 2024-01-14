@@ -193,6 +193,28 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(fontSize: 18, color: Colors.black),
                       ),
                     ),
+
+                    const SizedBox(
+                      height: 10,
+                    ),
+
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey,                          
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomePage(),
+                            ),
+                            (route) => false,
+                          );
+                        },
+                        child: Icon(Icons.android)),
                   ],
                 ),
               ),

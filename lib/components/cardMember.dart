@@ -16,21 +16,15 @@ class TeamMember {
 
 class TeamPage extends StatelessWidget {
   final List<TeamMember> teamMembers = [
+    TeamMember(name: 'Nome Colaborador', role: 'Função', imageMember: ''),
     TeamMember(
-        name: 'Nome Colaborador', role: 'Função', imageMember: ''),
-    TeamMember(
-      name: 'Marcos Printes',
-      role: 'Desenvolvedor Mobile',
-      imageMember: '',
-    ),
-    TeamMember(
-        name: 'Nome Colaborador', role: 'Função', imageMember: ''),
-    TeamMember(
-        name: 'Nome Colaborador', role: 'Função', imageMember: ''),
-    TeamMember(
-        name: 'Nome Colaborador', role: 'Função', imageMember: ''),
-    TeamMember(
-        name: 'Nome Colaborador', role: 'Função', imageMember: ''),
+        name: 'Augusto Junior',
+        role: 'Desenvolvedor Mobile',
+        imageMember: 'assets/augusto.png'),
+    TeamMember(name: 'Nome Colaborador', role: 'Função', imageMember: ''),
+    TeamMember(name: 'Nome Colaborador', role: 'Função', imageMember: ''),
+    TeamMember(name: 'Nome Colaborador', role: 'Função', imageMember: ''),
+    TeamMember(name: 'Nome Colaborador', role: 'Função', imageMember: ''),
   ];
 
   TeamPage({super.key});
@@ -48,16 +42,22 @@ class TeamPage extends StatelessWidget {
   }
 
   Widget buildTeamMemberCard(TeamMember member) {
-    return Card(
+    return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: ListTile(
         leading: CircleAvatar(
           radius: 30.0,
-          backgroundImage: '' == member.imageMember
-              ? AssetImage(member.imageMember)
-              : const AssetImage('assets/tapotaLogo.png'),
+          backgroundImage:
+              '' == member.imageMember || member.imageMember == null
+                  ? const AssetImage('assets/nothumb.png')
+                  : AssetImage(member.imageMember),
         ),
-        title: Text(member.name),
+        title: Text(
+          member.name,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         subtitle: Text(member.role),
       ),
     );

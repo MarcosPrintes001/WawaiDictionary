@@ -91,12 +91,14 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () {
                         ShowFilterModal(context);
                       },
-                      child: const Icon(Icons.filter_list),
+                      child: const Icon(
+                        Icons.filter_list,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                 ),
                 FloatingActionButton(
-                  
                   onPressed: () {
                     _scrollController.animateTo(
                       0,
@@ -104,7 +106,10 @@ class _HomePageState extends State<HomePage> {
                       curve: Curves.easeInOut,
                     );
                   },
-                  child: const Icon(Icons.arrow_upward),
+                  child: const Icon(
+                    Icons.arrow_upward,
+                    color: Colors.black,
+                  ),
                 ),
               ],
             )
@@ -114,6 +119,7 @@ class _HomePageState extends State<HomePage> {
               },
               child: const Icon(
                 Icons.filter_list,
+                color: Colors.black,
               ),
             ),
     );

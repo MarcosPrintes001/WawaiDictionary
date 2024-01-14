@@ -11,12 +11,11 @@ class MySideBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     logout() {
-      Navigator.pushAndRemoveUntil(
+      Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => const LoginPage(),
         ),
-        (route) => false,
       );
     }
 
@@ -51,22 +50,30 @@ class MySideBar extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-
               children: [
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
                       SidebarButton(
                         onTap: callDict,
                         text: "Dicionário",
                         icone: Icons.language_outlined, //melhorar Icone
                       ),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       SidebarButton(
                         onTap: () {},
                         text: "Atualizar",
                         icone: Icons.cloud_download_outlined,
+                      ),
+                      const SizedBox(
+                        height: 10,
                       ),
                       SidebarButton(
                         onTap: callAbout,
@@ -81,7 +88,7 @@ class MySideBar extends StatelessWidget {
           ),
           const Divider(),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(bottom: 18, top: 15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [

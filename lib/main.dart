@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:waiwai_dictionary/screens/about.dart';
 import 'package:waiwai_dictionary/screens/home.dart';
-import 'package:waiwai_dictionary/screens/login.dart';
-import 'package:waiwai_dictionary/screens/word.dart';
 
 //Função principal Flutter
 void main() {
