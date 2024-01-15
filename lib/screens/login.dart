@@ -130,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 12,
                     ),
 
-                    //BOTÂO LOGAR
+//BOTÂO LOGAR
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
@@ -165,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 10,
                     ),
 
-                    //REGISTRAR AGORA
+//REGISTRAR AGORA
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
@@ -180,12 +180,12 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.pushAndRemoveUntil(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const RegistrationPage(),
                           ),
-                          (route) => false,
+                          
                         );
                       },
                       child: const Text(
@@ -193,6 +193,12 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(fontSize: 18, color: Colors.black),
                       ),
                     ),
+
+                    const SizedBox(
+                      height: 10,
+                    ),
+
+                
                   ],
                 ),
               ),
