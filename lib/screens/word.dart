@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:waiwai_dictionary/components/appBar.dart';
-import 'package:waiwai_dictionary/components/sidebar.dart';
+import 'package:waiwai_dictionary/components/sidebarNotLogged.dart';
 
 class WordPage extends StatelessWidget {
   const WordPage({super.key});

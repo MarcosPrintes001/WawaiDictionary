@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:waiwai_dictionary/components/appBar.dart';
-import 'package:waiwai_dictionary/components/sidebar.dart';
+import 'package:waiwai_dictionary/components/sidebarNotLogged.dart';
 import 'package:waiwai_dictionary/components/modal.dart';
 import 'package:waiwai_dictionary/components/word.dart';
 import 'package:waiwai_dictionary/screens/word.dart';
@@ -66,15 +66,16 @@ class _HomePageState extends State<HomePage> {
           controller: _scrollController,
           itemCount: 30,
           itemBuilder: (context, index) => ListTile(
-            title: WordComponent(onTap: () {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const WordPage(),
-                ),
-                (route) => false,
-              );
-            }),
+            title: WordComponent(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const WordPage(),
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),

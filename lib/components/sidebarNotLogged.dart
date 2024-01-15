@@ -10,7 +10,7 @@ class MySideBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    logout() {
+    callLogin() {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -20,22 +20,20 @@ class MySideBar extends StatelessWidget {
     }
 
     callDict() {
-      Navigator.pushAndRemoveUntil(
+      Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => const HomePage(),
         ),
-        (route) => false,
       );
     }
 
     callAbout() {
-      Navigator.pushAndRemoveUntil(
+      Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => const Sobre(),
         ),
-        (route) => false,
       );
     }
 
@@ -48,42 +46,44 @@ class MySideBar extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      SidebarButton(
-                        onTap: callDict,
-                        text: "Dicionário",
-                        icone: Icons.language_outlined, //melhorar Icone
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      SidebarButton(
-                        onTap: () {},
-                        text: "Atualizar",
-                        icone: Icons.cloud_download_outlined,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      SidebarButton(
-                        onTap: callAbout,
-                        text: "Sobre",
-                        icone: Icons.info_outline_rounded,
-                      ),
-                    ],
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        SidebarButton(
+                          onTap: callDict,
+                          text: "Dicionário",
+                          icone: Icons.language_outlined, //melhorar Icone
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        SidebarButton(
+                          onTap: () {},
+                          text: "Atualizar",
+                          icone: Icons.cloud_download_outlined,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        SidebarButton(
+                          onTap: callAbout,
+                          text: "Sobre",
+                          icone: Icons.info_outline_rounded,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           const Divider(),
@@ -93,7 +93,7 @@ class MySideBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SidebarButton(
-                  onTap: logout,
+                  onTap: callLogin,
                   text: "Entrar/Registrar-se",
                   icone: FontAwesomeIcons.circleUser,
                 ),

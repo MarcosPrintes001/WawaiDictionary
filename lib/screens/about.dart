@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:waiwai_dictionary/components/appBar.dart';
 import 'package:waiwai_dictionary/components/cardMember.dart';
-import 'package:waiwai_dictionary/components/sidebar.dart';
+import 'package:waiwai_dictionary/components/sidebarNotLogged.dart';
 
 class Sobre extends StatefulWidget {
   const Sobre({super.key});

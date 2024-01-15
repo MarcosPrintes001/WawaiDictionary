@@ -180,12 +180,12 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.pushAndRemoveUntil(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const RegistrationPage(),
                           ),
-                          (route) => false,
+                          
                         );
                       },
                       child: const Text(
@@ -198,23 +198,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 10,
                     ),
 
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey,                          
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const HomePage(),
-                            ),
-                            (route) => false,
-                          );
-                        },
-                        child: Icon(Icons.android)),
+                
                   ],
                 ),
               ),

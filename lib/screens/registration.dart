@@ -1,9 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:waiwai_dictionary/screens/home.dart';
-import 'package:waiwai_dictionary/screens/login.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({
@@ -278,39 +276,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         "Registrar",
                         style: TextStyle(fontSize: 18, color: Colors.black),
                       ),
-                    ),
-
-                    const SizedBox(
-                      height: 10,
-                    ),
-
-//REGISTRAR AGORA
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Já tem conta?",
-                          style: GoogleFonts.roboto(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold), //GoogleFonts
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (context) {
-                              return const LoginPage();
-                            }));
-                          },
-                          child: Text(
-                            "Logar Agora",
-                            style: GoogleFonts.roboto(
-                              color: Colors.lightBlue,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
-                      ],
                     ),
                   ],
                 ),
