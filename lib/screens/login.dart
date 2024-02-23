@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:waiwai_dictionary/screens/home.dart';
 import 'package:waiwai_dictionary/screens/registration.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //Tela de login de usuário
 class LoginPage extends StatefulWidget {
@@ -144,8 +145,13 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formkey.currentState!.validate()) {
+                          // Salvar o status de login como verdadeiro
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          await prefs.setBool('logado', true);
+
+                          // Navegar para a próxima tela (HomePage)
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
@@ -185,7 +191,6 @@ class _LoginPageState extends State<LoginPage> {
                           MaterialPageRoute(
                             builder: (context) => const RegistrationPage(),
                           ),
-                          
                         );
                       },
                       child: const Text(
@@ -197,8 +202,6 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(
                       height: 10,
                     ),
-
-                
                   ],
                 ),
               ),

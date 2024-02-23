@@ -1,8 +1,10 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:waiwai_dictionary/components/appBar.dart';
 import 'package:waiwai_dictionary/components/cardMember.dart';
+import 'package:waiwai_dictionary/components/sideBarLogged.dart';
 import 'package:waiwai_dictionary/components/sidebarNotLogged.dart';
 
 class Sobre extends StatefulWidget {
@@ -13,12 +15,16 @@ class Sobre extends StatefulWidget {
 }
 
 class _SobreState extends State<Sobre> {
+  bool _isLoggedIn = false;
+
   @override
   Widget build(BuildContext context) {
+    _checkLoginStatus(); // Verificar o status de login ao construir a página
+
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: MyAppBar(),
-      drawer: const MySideBar(),
+      drawer: _isLoggedIn ? const SideBarLogged() : const SideBarNotLogged(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(28),
@@ -59,5 +65,14 @@ class _SobreState extends State<Sobre> {
         ),
       ),
     );
+  }
+
+  // Método para verificar o status de login
+  void _checkLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isLoggedIn = prefs.getBool('logado') ??
+          false; // Se não existir o status de login, assume como falso
+    });
   }
 }

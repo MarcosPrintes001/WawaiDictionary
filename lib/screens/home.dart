@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:waiwai_dictionary/components/appBar.dart';
+import 'package:waiwai_dictionary/components/sideBarLogged.dart';
 import 'package:waiwai_dictionary/components/sidebarNotLogged.dart';
 import 'package:waiwai_dictionary/components/modal.dart';
 import 'package:waiwai_dictionary/components/word.dart';
 import 'package:waiwai_dictionary/screens/word.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -15,8 +17,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   final ScrollController _scrollController = ScrollController();
   bool _showArrowUpButton = false;
+  bool _isLoggedIn = false;
 
   @override
   void initState() {
@@ -43,10 +47,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    _checkLoginStatus(); // Verificar o status de login ao construir a página
+
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: MyAppBar(),
-      drawer: const MySideBar(),
+      drawer: _isLoggedIn ? const SideBarLogged() : const SideBarNotLogged(),
       body: NotificationListener<ScrollNotification>(
         onNotification: (scrollNotification) {
           if (scrollNotification is ScrollEndNotification) {
@@ -124,5 +130,13 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
     );
+  }
+
+  // Método para verificar o status de login
+  void _checkLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isLoggedIn = prefs.getBool('logado') ?? false; // Se não existir o status de login, assume como falso
+    });
   }
 }
