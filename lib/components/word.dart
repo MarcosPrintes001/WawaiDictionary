@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class WordComponent extends StatelessWidget {
   final VoidCallback onTap;
 
-  const WordComponent({super.key, required this.onTap});
+  const WordComponent({Key? key, required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String significado = "Significado 1, Significado 2";
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -16,32 +18,39 @@ class WordComponent extends StatelessWidget {
         ),
         padding: const EdgeInsets.only(left: 10.0),
         width: double.infinity,
-        child: const Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Text(
+            const Text(
               'Palavra',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20.0,
               ),
             ),
-        
             Text(
-              'Significado 1, Significado 2',
-              style: TextStyle(
+              _getShortenedMeaning('${significado}'),
+              style: const TextStyle(
                 fontSize: 18.0,
               ),
             ),
-            SizedBox(
-              height: 10  ,
+            const SizedBox(
+              height: 10,
             ),
           ],
         ),
       ),
     );
+  }
+
+  String _getShortenedMeaning(String meaning) {
+    if (meaning.length <= 20) {
+      return meaning;
+    } else {
+      return '${meaning.substring(0, 20)}...';
+    }
   }
 }

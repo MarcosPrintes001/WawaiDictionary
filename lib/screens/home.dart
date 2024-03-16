@@ -17,7 +17,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   final ScrollController _scrollController = ScrollController();
   bool _showArrowUpButton = false;
   bool _isLoggedIn = false;
@@ -68,7 +67,7 @@ class _HomePageState extends State<HomePage> {
           }
           return true;
         },
-        child: ListView.builder( // TODO: Limitar caracteres da descrição da palavra para 20 até colocar reticências
+        child: ListView.builder(
           controller: _scrollController,
           itemCount: 30,
           itemBuilder: (context, index) => ListTile(
@@ -136,7 +135,8 @@ class _HomePageState extends State<HomePage> {
   void _checkLoginStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _isLoggedIn = prefs.getBool('logado') ?? false; // Se não existir o status de login, assume como falso
+      _isLoggedIn = prefs.getBool('logado') ??
+          false; // Se não existir o status de login, assume como falso
     });
   }
 }

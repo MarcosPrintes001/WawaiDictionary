@@ -13,12 +13,14 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
+  
   final _formkey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _emaiController = TextEditingController();
   final _senhaController = TextEditingController();
   final _confirSenhaController = TextEditingController();
+
   bool _verSenha = false;
   bool _verSenhaConfirm = false;
 
