@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
           }
           return true;
         },
-        child: ListView.builder(
+        child: ListView.builder( // TODO: Limitar caracteres da descrição da palavra para 20 até colocar reticências
           controller: _scrollController,
           itemCount: 30,
           itemBuilder: (context, index) => ListTile(

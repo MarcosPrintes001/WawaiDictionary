@@ -57,14 +57,14 @@ class _WordPageState extends State<WordPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Palavra',
+                            'A', // TODO: 'PALAVRA' Trazer para o card maior 
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
-                            'Significado',
+                            'Significado(s)', // TODO: Texto de 'Significado(s)' trazer para o card maior 
                             style: TextStyle(
                               fontStyle: FontStyle.italic,
                               fontSize: 18,
@@ -74,7 +74,7 @@ class _WordPageState extends State<WordPage> {
                             height: 5,
                           ),
                           Text(
-                            'Referência 1',
+                            'Referências',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
@@ -108,28 +108,29 @@ class _WordPageState extends State<WordPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Referência 2',
+                            'Dicionário Wai Wai e Português', // TODO: Limitar o tamanho do texto para 30 caracteres, caso ultrasse, completar com reticências
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
                             ),
                           ),
                           Text(
-                            'Significado',
+                            'Significado: seu, sua, teu, tua, você, por exemplo: 1ª segunda pessoa awo kru, sua bebida, apici, sua esposa, amoro, você etc.',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          // TODO: Dar destaque ao texto 'Fonema:' e 'Comentário:' 
+                          SizedBox(height: 5),
+                          Text(
+                            'Fonema: Indisponível', // TODO: Caso fonema seja null
                             style: TextStyle(
                               fontSize: 18,
                             ),
                           ),
                           SizedBox(height: 5),
                           Text(
-                            'Fonema',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            'Comentário',
+                            'Comentário: Indisponível', // TODO: Caso comentário seja null
                             style: TextStyle(
                               fontSize: 18,
                             ),
