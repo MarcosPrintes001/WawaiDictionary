@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class WordComponent extends StatelessWidget {
   final VoidCallback onTap;
 
-  const WordComponent({Key? key, required this.onTap}) : super(key: key);
+  const WordComponent({Key? key, required this.onTap, required word}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
