@@ -1,17 +1,15 @@
-// ignore_for_file: file_names
-
 class Word {
   final int id;
   final String word;
-  final String phonemic;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final String? phonemic;
+  final String createdAt;
+  final String updatedAt;
   final int userId;
 
   Word({
     required this.id,
     required this.word,
-    required this.phonemic,
+    this.phonemic,
     required this.createdAt,
     required this.updatedAt,
     required this.userId,
@@ -19,12 +17,12 @@ class Word {
 
   factory Word.fromJson(Map<String, dynamic> json) {
     return Word(
-      id: json['id'],
-      word: json['word'],
+      id: json['id'] ?? 0,
+      word: json['word'] ?? '',
       phonemic: json['phonemic'],
-      createdAt: DateTime.parse(json['created_at']),
-      updatedAt: DateTime.parse(json['update_at']),
-      userId: json['user_id'],
+      createdAt: json['created_at'] ?? '',
+      updatedAt: json['update_at'] ?? '',
+      userId: json['user_id'] ?? 0,
     );
   }
 
@@ -33,8 +31,8 @@ class Word {
       'id': id,
       'word': word,
       'phonemic': phonemic,
-      'created_at': createdAt.toIso8601String(),
-      'update_at': updatedAt.toIso8601String(),
+      'created_at': createdAt,
+      'update_at': updatedAt,
       'user_id': userId,
     };
   }
@@ -53,9 +51,9 @@ class Reference {
 
   factory Reference.fromJson(Map<String, dynamic> json) {
     return Reference(
-      id: json['id'],
-      reference: json['reference'],
-      url: json['url'],
+      id: json['id'] ?? 0,
+      reference: json['reference'] ?? '',
+      url: json['url'] ?? '',
     );
   }
 
@@ -87,12 +85,12 @@ class Meaning {
 
   factory Meaning.fromJson(Map<String, dynamic> json) {
     return Meaning(
-      id: json['id'],
-      meaning: json['meaning'],
-      comment: json['comment'],
-      wordId: json['word_id'],
-      referenceId: json['reference_id'],
-      userId: json['user_id'],
+      id: json['id'] ?? 0,
+      meaning: json['meaning'] ?? '',
+      comment: json['comment'] ?? '',
+      wordId: json['word_id'] ?? 0,
+      referenceId: json['reference_id'] ?? 0,
+      userId: json['user_id'] ?? 0,
     );
   }
 

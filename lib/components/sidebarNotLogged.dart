@@ -4,6 +4,8 @@ import 'package:waiwai_dictionary/components/sidebar_buttons.dart';
 import 'package:waiwai_dictionary/screens/about.dart';
 import 'package:waiwai_dictionary/screens/home.dart';
 import 'package:waiwai_dictionary/screens/login.dart';
+import 'package:http/http.dart' as http;
+import 'package:waiwai_dictionary/services/api.dart';
 
 class SideBarNotLogged extends StatelessWidget {
   const SideBarNotLogged({super.key});
@@ -34,6 +36,17 @@ class SideBarNotLogged extends StatelessWidget {
         MaterialPageRoute(
           builder: (context) => const Sobre(),
         ),
+      );
+    }
+
+    getWords() {
+      fetchDataAndInsertIntoDatabase();
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomePage(),
+        ),
+        (route) => false,
       );
     }
 
@@ -68,7 +81,7 @@ class SideBarNotLogged extends StatelessWidget {
                           height: 10,
                         ),
                         SidebarButton(
-                          onTap: () {},
+                          onTap: getWords,
                           text: "Atualizar",
                           icone: Icons.cloud_download_outlined,
                         ),

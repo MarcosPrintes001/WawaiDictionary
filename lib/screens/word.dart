@@ -4,9 +4,14 @@ import 'package:waiwai_dictionary/components/appBar.dart';
 import 'package:waiwai_dictionary/components/myExpansionTile.dart';
 import 'package:waiwai_dictionary/components/sideBarLogged.dart';
 import 'package:waiwai_dictionary/components/sidebarNotLogged.dart';
+import 'package:waiwai_dictionary/models/wordModels.dart';
 
 class WordPage extends StatefulWidget {
-  const WordPage({Key? key}) : super(key: key);
+  final Word word;
+  final Meaning meaning;
+  final Reference reference;
+
+  const WordPage({Key? key, required this.word, required this.meaning, required this.reference, required List<Meaning> meanings}) : super(key: key);
 
   @override
   State<WordPage> createState() => _WordPageState();

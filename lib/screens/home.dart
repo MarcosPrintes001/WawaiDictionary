@@ -17,12 +17,14 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
+
 class _HomePageState extends State<HomePage> {
   final ScrollController _scrollController = ScrollController();
   bool _showArrowUpButton = false;
   bool _isLoggedIn = false;
   late DatabaseHelper _databaseHelper;
-  List<Map<String, dynamic>> _words = [];
+  List<Word> _words = [];
+  List<List<Meaning>> _meaningsList = [];
 
   @override
   void initState() {
@@ -40,6 +42,31 @@ class _HomePageState extends State<HomePage> {
           _showArrowUpButton = false;
         });
       }
+    });
+  }
+
+  void _loadWords() async {
+    final meanings = await _databaseHelper.getMeanings();
+    final wordIds =
+        meanings.map<int>((meaning) => meaning['word_id'] as int).toSet();
+
+    _words = await Future.wait(
+        wordIds.map((wordId) => _databaseHelper.getWordById(wordId)));
+    _meaningsList = List.generate(_words.length, (index) {
+      final wordId = _words[index].id;
+      return meanings
+          .where((meaning) => meaning['word_id'] == wordId)
+          .map((meaning) => Meaning.fromJson(meaning))
+          .toList();
+    });
+
+    setState(() {});
+  }
+
+  void _checkLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isLoggedIn = prefs.getBool('logado') ?? false;
     });
   }
 
@@ -65,29 +92,30 @@ class _HomePageState extends State<HomePage> {
                 }
                 return true;
               },
+              //TODO: Organizar as Palavras em ordem alfabetica
+              //TODO: COlocar indicador de Download
               child: ListView.builder(
                 controller: _scrollController,
                 itemCount: _words.length,
-                itemBuilder: (context, index) => ListTile(
-                  title: WordComponent(
-                    word: Word.fromJson(_words[index]),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const WordPage(),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                itemBuilder: (context, index) {
+                  final word = _words[index];
+                  final meanings = _meaningsList[index];
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: WordComponent(
+                      word: word,
+                      meanings: meanings,
+                      onTap: () {
+                        // TODO: Enviar para pagina de Palavra a palavra e os dados dela
+                      },
+                    ),
+                  );
+                },
               ),
             )
-          : Center(
-              child: TextButton(
-                onPressed: _loadWords,
-                child: Text('Clique no botão para atualizar'),
-              ),
+          : const Center(
+              child: Text(
+                  'Clique no botão "atualizar" da barra\nlateral para carregar as palavras do banco'),
             ),
       floatingActionButton: _showArrowUpButton
           ? Row(
@@ -134,20 +162,5 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
     );
-  }
-
-
-  void _loadWords() async {
-    final words = await _databaseHelper.getWords();
-    setState(() {
-      _words = words.cast<Map<String, dynamic>>();
-    });
-  }
-
-  void _checkLoginStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _isLoggedIn = prefs.getBool('logado') ?? false;
-    });
   }
 }

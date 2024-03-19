@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:waiwai_dictionary/components/sidebar_buttons.dart';
 import 'package:waiwai_dictionary/screens/about.dart';
 import 'package:waiwai_dictionary/screens/home.dart';
+import 'package:waiwai_dictionary/services/api.dart';
 
 class SideBarLogged extends StatefulWidget {
   const SideBarLogged({super.key});
@@ -42,6 +43,18 @@ class _SideBarLoggedState extends State<SideBarLogged> {
       );
     }
 
+    getWords() {
+      fetchDataAndInsertIntoDatabase();
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomePage(),
+        ),
+        (route) => false,
+      );
+    }
+
+
     return Drawer(
       child: Column(
         children: [
@@ -73,7 +86,7 @@ class _SideBarLoggedState extends State<SideBarLogged> {
                           height: 10,
                         ),
                         SidebarButton(
-                          onTap: () {},
+                          onTap: getWords,
                           text: "Atualizar",
                           icone: Icons.cloud_download_outlined,
                         ),

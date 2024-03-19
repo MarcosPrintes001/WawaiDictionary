@@ -3,87 +3,98 @@ import 'package:path/path.dart';
 import 'package:waiwai_dictionary/models/wordModels.dart';
 
 class DatabaseHelper {
-  static final DatabaseHelper _instance = DatabaseHelper._internal();
-  factory DatabaseHelper() => _instance;
-  static late Database _database;
-
-  DatabaseHelper._internal();
+  Database? _database;
 
   Future<Database> get database async {
-    if (_database != null) {
-      return _database;
+    if (_database == null) {
+      _database = await _initDatabase();
     }
-    _database = await initDatabase();
-    return _database;
+    return _database!;
   }
 
-  Future<Database> initDatabase() async {
-    String path = join(await getDatabasesPath(), 'waiwaiData.db');
-    return await openDatabase(path, version: 1, onCreate: _createDb);
+  Future<Database> _initDatabase() async {
+    String path = join(await getDatabasesPath(), 'your_database.db');
+    return await openDatabase(
+      path,
+      version: 1,
+      onCreate: _createDatabase,
+    );
   }
 
-  void _createDb(Database db, int newVersion) async {
+  Future<Word> getWordById(int id) async {
+    Database db = await database;
+    List<Map<String, dynamic>> maps = await db.query(
+      'Words',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    if (maps.length > 0) {
+      return Word.fromJson(maps.first);
+    }
+    throw Exception('Word not found');
+  }
+
+  Future<void> _createDatabase(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE words(
-        id INTEGER PRIMARY KEY,
-        word TEXT,
-        phonemic TEXT,
-        created_at TEXT,
-        update_at TEXT,
-        user_id INTEGER
-      )
-    ''');
+    CREATE TABLE IF NOT EXISTS Words(
+      id INTEGER PRIMARY KEY,
+      word TEXT,
+      phonemic TEXT,
+      created_at TEXT,
+      update_at TEXT,
+      user_id INTEGER
+    )
+  ''');
 
     await db.execute('''
-      CREATE TABLE references(
-        id INTEGER PRIMARY KEY,
-        reference TEXT,
-        url TEXT
-      )
-    ''');
+    CREATE TABLE IF NOT EXISTS "ReferencesTable"(
+      id INTEGER PRIMARY KEY,
+      reference TEXT,
+      url TEXT
+    )
+  ''');
 
     await db.execute('''
-      CREATE TABLE meanings(
-        id INTEGER PRIMARY KEY,
-        meaning TEXT,
-        comment TEXT,
-        word_id INTEGER,
-        reference_id INTEGER,
-        user_id INTEGER
-      )
-    ''');
+  CREATE TABLE IF NOT EXISTS MeaningsTable(
+    id INTEGER PRIMARY KEY,
+    meaning TEXT,
+    comment TEXT,
+    word_id INTEGER,
+    reference_id INTEGER,
+    user_id INTEGER,
+    FOREIGN KEY (word_id) REFERENCES Words(id),
+    FOREIGN KEY (reference_id) REFERENCES "References"(id)
+  )
+''');
   }
 
-  Future<void> insertWord(Word word) async {
-    final db = await database;
-    await db.insert('words', word.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
+  Future<int> insertWord(Word word) async {
+    Database db = await database;
+    return await db.insert('Words', word.toMap());
   }
 
-  Future<void> insertReference(Reference reference) async {
-    final db = await database;
-    await db.insert('references', reference.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
+  Future<int> insertReference(Reference reference) async {
+    Database db = await database;
+    return await db.insert('ReferencesTable', reference.toMap());
   }
 
-  Future<void> insertMeaning(Meaning meaning) async {
-    final db = await database;
-    await db.insert('meanings', meaning.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
+  Future<int> insertMeaning(Meaning meaning) async {
+    Database db = await database;
+    return await db.insert('MeaningsTable', meaning.toMap());
   }
 
-  Future<List<Word>> getWords() async {
-    final db = await database;
-    final List<Map<String, dynamic>> maps = await db.query('words');
-    return List.generate(maps.length, (i) {
-      return Word(
-        id: maps[i]['id'],
-        word: maps[i]['word'],
-        phonemic: maps[i]['phonemic'],
-        createdAt: DateTime.parse(maps[i]['created_at']),
-        updatedAt: DateTime.parse(maps[i]['update_at']),
-        userId: maps[i]['user_id'],
-      );
-    });
+  Future<List<Map<String, dynamic>>> getWords() async {
+    Database db = await database;
+    return await db.query('Words');
+  }
+
+  Future<List<Map<String, dynamic>>> getReferences() async {
+    Database db = await database;
+    return await db.query('ReferencesTable');
+  }
+
+  Future<List<Map<String, dynamic>>> getMeanings() async {
+    Database db = await database;
+    return await db.query('MeaningsTable');
   }
 }

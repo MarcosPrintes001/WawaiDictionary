@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:waiwai_dictionary/models/wordModels.dart';
 
 class WordComponent extends StatelessWidget {
   final VoidCallback onTap;
+  final Word word;
+  final List<Meaning> meanings;
 
-  const WordComponent({Key? key, required this.onTap, required word}) : super(key: key);
+  const WordComponent({
+    Key? key,
+    required this.onTap,
+    required this.word,
+    required this.meanings,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String significado = "Significado 1, Significado 2";
-
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -16,30 +22,32 @@ class WordComponent extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
         ),
-        padding: const EdgeInsets.only(left: 10.0),
+        padding: const EdgeInsets.all(10.0),
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
-              height: 10,
-            ),
-            const Text(
-              'Palavra',
-              style: TextStyle(
+            Text(
+              word.word,
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20.0,
               ),
             ),
-            Text(
-              _getShortenedMeaning('${significado}'),
-              style: const TextStyle(
-                fontSize: 18.0,
-              ),
+            const SizedBox(height: 10),
+            //TODO: não colocar em colunas e sim em linhas
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: meanings.map((meaning) {
+                return Text(
+                  _getShortenedMeaning(meaning.meaning),
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                  ),
+                );
+              }).toList(),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
           ],
         ),
       ),
