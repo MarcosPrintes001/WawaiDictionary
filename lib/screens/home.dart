@@ -22,6 +22,8 @@ class _HomePageState extends State<HomePage> {
   bool _showArrowUpButton = false;
   bool _isLoggedIn = false;
   late DatabaseHelper _databaseHelper;
+  bool _isLoading = false; 
+
   List<Word> _words = [];
   List<List<Meaning>> _meaningsList = [];
 
@@ -45,10 +47,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _loadWords() async {
-    final meanings = await _databaseHelper.getMeanings();
-    final wordIds = meanings.map<int>((meaning) => meaning['word_id'] as int).toSet();
+    setState(() {
+      _isLoading = true; // Mostrar indicador de progresso
+    });
 
-    _words = await Future.wait(wordIds.map((wordId) => _databaseHelper.getWordById(wordId)));
+    final meanings = await _databaseHelper.getMeanings();
+    final wordIds =
+        meanings.map<int>((meaning) => meaning['word_id'] as int).toSet();
+
+    _words = await Future.wait(
+        wordIds.map((wordId) => _databaseHelper.getWordById(wordId)));
     _words.sort((a, b) => a.word.compareTo(b.word));
     _meaningsList = List.generate(_words.length, (index) {
       final wordId = _words[index].id;
@@ -58,7 +66,10 @@ class _HomePageState extends State<HomePage> {
           .toList();
     });
 
-    setState(() {});
+    setState(() {
+      _isLoading =
+          false; // Ocultar indicador de progresso após o término do download
+    });
   }
 
   void _checkLoginStatus() async {
@@ -74,42 +85,49 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.grey[200],
       appBar: MyAppBar(),
       drawer: _isLoggedIn ? const SideBarLogged() : const SideBarNotLogged(),
-      body: _words.isNotEmpty
-          ? NotificationListener<ScrollNotification>(
-              onNotification: (scrollNotification) {
-                if (scrollNotification is ScrollEndNotification) {
-                  if (_scrollController.offset >= 200) {
-                    setState(() {
-                      _showArrowUpButton = true;
-                    });
-                  } else {
-                    setState(() {
-                      _showArrowUpButton = false;
-                    });
-                  }
-                }
-                return true;
-              },
-              child: ListView.builder(
-                controller: _scrollController,
-                itemCount: _words.length,
-                itemBuilder: (context, index) {
-                  final word = _words[index];
-                  final meanings = _meaningsList[index];
-                  return WordComponent(
-                    word: word,
-                    meanings: meanings,
-                    onTap: () {
-                      // Implemente o que deseja fazer quando o componente for tocado
-                    },
-                  );
-                },
-              ),
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(), // Indicador de progresso
             )
-          : const Center(
-              child: Text(
-                  'Clique no botão "atualizar" da barra\nlateral para carregar as palavras do banco'),
-            ),
+          : _words.isNotEmpty
+              ? NotificationListener<ScrollNotification>(
+                  onNotification: (scrollNotification) {
+                    if (scrollNotification is ScrollEndNotification) {
+                      if (_scrollController.offset >= 200) {
+                        setState(() {
+                          _showArrowUpButton = true;
+                        });
+                      } else {
+                        setState(() {
+                          _showArrowUpButton = false;
+                        });
+                      }
+                    }
+                    return true;
+                  },
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: _words.length,
+                    itemBuilder: (context, index) {
+                      final word = _words[index];
+                      final meanings = _meaningsList[index];
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: WordComponent(
+                          word: word,
+                          meanings: meanings,
+                          onTap: () {
+                            // Implemente o que deseja fazer quando o componente for tocado
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                )
+              : const Center(
+                  child: Text(
+                      'Clique no botão "atualizar" da barra\nlateral para carregar as palavras do banco'),
+                ),
       floatingActionButton: _showArrowUpButton
           ? Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
