@@ -7,11 +7,9 @@ import 'package:waiwai_dictionary/components/sidebarNotLogged.dart';
 import 'package:waiwai_dictionary/models/wordModels.dart';
 
 class WordPage extends StatefulWidget {
-  final Word word;
-  final Meaning meaning;
-  final Reference reference;
+ 
 
-  const WordPage({Key? key, required this.word, required this.meaning, required this.reference, required List<Meaning> meanings}) : super(key: key);
+  const WordPage({Key? key, required List<Meaning> meanings}) : super(key: key);
 
   @override
   State<WordPage> createState() => _WordPageState();
@@ -80,12 +78,7 @@ class _WordPageState extends State<WordPage> {
                                 ),
                               ),
                             ),
-                            MyExpansionTile(
-                              " seu, sua, teu, tua, você, por exemplo: 1ª segunda pessoa awo kru, sua bebida, apici, sua esposa, amoro, você etc.",
-                              " Texto do Fonema Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.",
-                              " Texto do comentário Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.",
-                              "Referencia 1",
-                            )
+                            
                           ],
                         ),
                       ),
@@ -108,12 +101,7 @@ class _WordPageState extends State<WordPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            MyExpansionTile(
-                              " seu, sua, teu, tua, você, por exemplo: 1ª segunda pessoa awo kru, sua bebida, apici, sua esposa, amoro, você etc.",
-                              '',
-                              '',
-                              "Referencia 2",
-                            )
+                            
                           ],
                         ),
                       ),

@@ -6,6 +6,7 @@ import 'package:waiwai_dictionary/components/modal.dart';
 import 'package:waiwai_dictionary/components/word.dart';
 import 'package:waiwai_dictionary/models/wordModels.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:waiwai_dictionary/screens/word.dart';
 import 'package:waiwai_dictionary/services/bd.dart';
 
 class HomePage extends StatefulWidget {
@@ -55,8 +56,7 @@ class _HomePageState extends State<HomePage> {
     final wordIds =
         meanings.map<int>((meaning) => meaning['word_id'] as int).toSet();
 
-    _words = await Future.wait(
-        wordIds.map((wordId) => _databaseHelper.getWordById(wordId)));
+    _words = await Future.wait(wordIds.map((wordId) => _databaseHelper.getWordById(wordId)));
 
     _words.sort((a, b) => a.word.toLowerCase().compareTo(b.word.toLowerCase()));
 
@@ -69,8 +69,7 @@ class _HomePageState extends State<HomePage> {
     });
 
     setState(() {
-      _isLoading =
-          false; // Ocultar indicador de progresso após o término do download
+      _isLoading = false;
     });
   }
 
@@ -119,7 +118,14 @@ class _HomePageState extends State<HomePage> {
                           word: word,
                           meanings: meanings,
                           onTap: () {
-                            // Implemente o que deseja fazer quando o componente for tocado
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return WordPage(meanings: meanings);
+                                },
+                              ),
+                            );
                           },
                         ),
                       );

@@ -21,19 +21,6 @@ class DatabaseHelper {
     );
   }
 
-  Future<Word> getWordById(int id) async {
-    Database db = await database;
-    List<Map<String, dynamic>> maps = await db.query(
-      'Words',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
-    if (maps.length > 0) {
-      return Word.fromJson(maps.first);
-    }
-    throw Exception('Word not found');
-  }
-
   Future<void> _createDatabase(Database db, int version) async {
     await db.execute('''
     CREATE TABLE IF NOT EXISTS Words(
@@ -88,9 +75,35 @@ class DatabaseHelper {
     return await db.query('Words');
   }
 
+  Future<Word> getWordById(int id) async {
+    Database db = await database;
+    List<Map<String, dynamic>> maps = await db.query(
+      'Words',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    if (maps.length > 0) {
+      return Word.fromJson(maps.first);
+    }
+    throw Exception('Word not found');
+  }
+
   Future<List<Map<String, dynamic>>> getReferences() async {
     Database db = await database;
     return await db.query('ReferencesTable');
+  }
+
+  Future<Reference> getReferenceById(int id) async {
+    Database db = await database;
+    List<Map<String, dynamic>> maps = await db.query(
+      'ReferencesTable',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    if (maps.length > 0) {
+      return Reference.fromJson(maps.first);
+    }
+    throw Exception('Reference not found');
   }
 
   Future<List<Map<String, dynamic>>> getMeanings() async {
