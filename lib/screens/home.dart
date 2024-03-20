@@ -5,7 +5,6 @@ import 'package:waiwai_dictionary/components/sidebarNotLogged.dart';
 import 'package:waiwai_dictionary/components/modal.dart';
 import 'package:waiwai_dictionary/components/word.dart';
 import 'package:waiwai_dictionary/models/wordModels.dart';
-import 'package:waiwai_dictionary/screens/word.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:waiwai_dictionary/services/bd.dart';
 
@@ -47,11 +46,10 @@ class _HomePageState extends State<HomePage> {
 
   void _loadWords() async {
     final meanings = await _databaseHelper.getMeanings();
-    final wordIds =
-        meanings.map<int>((meaning) => meaning['word_id'] as int).toSet();
+    final wordIds = meanings.map<int>((meaning) => meaning['word_id'] as int).toSet();
 
-    _words = await Future.wait(
-        wordIds.map((wordId) => _databaseHelper.getWordById(wordId)));
+    _words = await Future.wait(wordIds.map((wordId) => _databaseHelper.getWordById(wordId)));
+    _words.sort((a, b) => a.word.compareTo(b.word));
     _meaningsList = List.generate(_words.length, (index) {
       final wordId = _words[index].id;
       return meanings
@@ -92,23 +90,18 @@ class _HomePageState extends State<HomePage> {
                 }
                 return true;
               },
-              //TODO: Organizar as Palavras em ordem alfabetica
-              //TODO: COlocar indicador de Download
               child: ListView.builder(
                 controller: _scrollController,
                 itemCount: _words.length,
                 itemBuilder: (context, index) {
                   final word = _words[index];
                   final meanings = _meaningsList[index];
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: WordComponent(
-                      word: word,
-                      meanings: meanings,
-                      onTap: () {
-                        // TODO: Enviar para pagina de Palavra a palavra e os dados dela
-                      },
-                    ),
+                  return WordComponent(
+                    word: word,
+                    meanings: meanings,
+                    onTap: () {
+                      // Implemente o que deseja fazer quando o componente for tocado
+                    },
                   );
                 },
               ),

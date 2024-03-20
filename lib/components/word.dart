@@ -15,6 +15,13 @@ class WordComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String firstMeaning = meanings.isNotEmpty ? meanings.first.meaning : "";
+
+    // Limitar o primeiro significado a 30 caracteres
+    if (firstMeaning.length > 30) {
+      firstMeaning = "${firstMeaning.substring(0, 30)}...";
+    }
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -35,30 +42,15 @@ class WordComponent extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            //TODO: não colocar em colunas e sim em linhas
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: meanings.map((meaning) {
-                return Text(
-                  _getShortenedMeaning(meaning.meaning),
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                  ),
-                );
-              }).toList(),
+            Text(
+              firstMeaning,
+              style: const TextStyle(
+                fontSize: 16.0,
+              ),
             ),
-            const SizedBox(height: 10),
           ],
         ),
       ),
     );
-  }
-
-  String _getShortenedMeaning(String meaning) {
-    if (meaning.length <= 20) {
-      return meaning;
-    } else {
-      return '${meaning.substring(0, 20)}...';
-    }
   }
 }
