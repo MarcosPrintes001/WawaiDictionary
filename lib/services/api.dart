@@ -4,7 +4,12 @@ import 'package:waiwai_dictionary/models/wordModels.dart';
 import 'package:waiwai_dictionary/services/bd.dart';
 
 String urlBase = 'http://10.12.32.233:3001/';
-Future<void> fetchDataAndInsertIntoDatabase() async {
+
+// Definindo um tipo de função de retorno de chamada para atualização de progresso
+typedef ProgressCallback = void Function(double);
+
+Future<void> fetchDataAndInsertIntoDatabase(
+    {required ProgressCallback onProgress}) async {
   try {
     // Realiza a solicitação para a rota de palavras
     var wordsResponse = await http.get(Uri.parse('$urlBase/words/export/all'));
@@ -21,11 +26,19 @@ Future<void> fetchDataAndInsertIntoDatabase() async {
       List<dynamic> referencesData = jsonDecode(referencesResponse.body);
       List<dynamic> meaningsData = jsonDecode(meaningsResponse.body);
 
+      // Calcula o total de operações necessárias para estimar o progresso
+      int totalOperations =
+          wordsData.length + referencesData.length + meaningsData.length;
+      int completedOperations = 0;
+
       // Insira os dados nas tabelas correspondentes do banco de dados
       for (var data in wordsData) {
         if (data.containsKey('word')) {
           Word word = Word.fromJson(data);
           await DatabaseHelper().insertWord(word);
+          completedOperations++;
+          onProgress(completedOperations /
+              totalOperations); // Chama a função de retorno de chamada com o progresso atual
         }
       }
 
@@ -33,6 +46,9 @@ Future<void> fetchDataAndInsertIntoDatabase() async {
         if (data.containsKey('reference')) {
           Reference reference = Reference.fromJson(data);
           await DatabaseHelper().insertReference(reference);
+          completedOperations++;
+          onProgress(completedOperations /
+              totalOperations); // Chama a função de retorno de chamada com o progresso atual
         }
       }
 
@@ -40,6 +56,9 @@ Future<void> fetchDataAndInsertIntoDatabase() async {
         if (data.containsKey('meaning')) {
           Meaning meaning = Meaning.fromJson(data);
           await DatabaseHelper().insertMeaning(meaning);
+          completedOperations++;
+          onProgress(completedOperations /
+              totalOperations); // Chama a função de retorno de chamada com o progresso atual
         }
       }
 

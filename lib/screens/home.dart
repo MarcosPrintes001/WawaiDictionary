@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   bool _showArrowUpButton = false;
   bool _isLoggedIn = false;
   late DatabaseHelper _databaseHelper;
-  bool _isLoading = false; 
+  bool _isLoading = false;
 
   List<Word> _words = [];
   List<List<Meaning>> _meaningsList = [];
@@ -57,7 +57,9 @@ class _HomePageState extends State<HomePage> {
 
     _words = await Future.wait(
         wordIds.map((wordId) => _databaseHelper.getWordById(wordId)));
-    _words.sort((a, b) => a.word.compareTo(b.word));
+
+    _words.sort((a, b) => a.word.toLowerCase().compareTo(b.word.toLowerCase()));
+
     _meaningsList = List.generate(_words.length, (index) {
       final wordId = _words[index].id;
       return meanings
