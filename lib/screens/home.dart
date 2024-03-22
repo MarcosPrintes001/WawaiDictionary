@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   bool _isLoggedIn = false;
   late DatabaseHelper _databaseHelper;
   bool _isLoading = false;
-
+  List<Word> _filteredWords = [];
   List<Word> _words = [];
   List<List<Meaning>> _meaningsList = [];
 
@@ -47,6 +47,21 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _clearFilter() {
+    setState(() {
+      _filteredWords.clear();
+    });
+  }
+
+  void _filterWords(String query) {
+    setState(() {
+      _filteredWords = _words
+          .where(
+              (word) => word.word.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
+
   void _loadWords() async {
     setState(() {
       _isLoading = true; // Mostrar indicador de progresso
@@ -56,7 +71,8 @@ class _HomePageState extends State<HomePage> {
     final wordIds =
         meanings.map<int>((meaning) => meaning['word_id'] as int).toSet();
 
-    _words = await Future.wait(wordIds.map((wordId) => _databaseHelper.getWordById(wordId)));
+    _words = await Future.wait(
+        wordIds.map((wordId) => _databaseHelper.getWordById(wordId)));
 
     _words.sort((a, b) => a.word.toLowerCase().compareTo(b.word.toLowerCase()));
 
@@ -88,51 +104,16 @@ class _HomePageState extends State<HomePage> {
       drawer: _isLoggedIn ? const SideBarLogged() : const SideBarNotLogged(),
       body: _isLoading
           ? const Center(
-              child: CircularProgressIndicator(), // Indicador de progresso
+              child: CircularProgressIndicator(),
             )
-          : _words.isNotEmpty
-              ? NotificationListener<ScrollNotification>(
-                  onNotification: (scrollNotification) {
-                    if (scrollNotification is ScrollEndNotification) {
-                      if (_scrollController.offset >= 200) {
-                        setState(() {
-                          _showArrowUpButton = true;
-                        });
-                      } else {
-                        setState(() {
-                          _showArrowUpButton = false;
-                        });
-                      }
-                    }
-                    return true;
-                  },
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    itemCount: _words.length,
-                    itemBuilder: (context, index) {
-                      final word = _words[index];
-                      final meanings = _meaningsList[index];
-                      return WordComponent(
-                        word: word,
-                        meanings: meanings,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return WordPage(meanings: meanings, words: word);
-                              },
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                )
-              : const Center(
-                  child: Text(
-                      'Clique no botão "atualizar" da barra\nlateral para carregar as palavras do banco'),
-                ),
+          : _filteredWords.isNotEmpty
+              ? _buildWordList(_filteredWords)
+              : _words.isNotEmpty
+                  ? _buildWordList(_words)
+                  : const Center(
+                      child: Text(
+                          'Clique no botão "atualizar" da barra\nlateral para carregar as palavras do banco'),
+                    ),
       floatingActionButton: _showArrowUpButton
           ? Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -144,7 +125,7 @@ class _HomePageState extends State<HomePage> {
                     duration: const Duration(milliseconds: 500),
                     child: FloatingActionButton(
                       onPressed: () {
-                        ShowFilterModal(context);
+                        ShowFilterModal(context, _filterWords);
                       },
                       child: const Icon(
                         Icons.filter_list,
@@ -170,13 +151,79 @@ class _HomePageState extends State<HomePage> {
             )
           : FloatingActionButton(
               onPressed: () {
-                ShowFilterModal(context);
+                ShowFilterModal(context, _filterWords);
               },
               child: const Icon(
                 Icons.filter_list,
                 color: Colors.black,
               ),
             ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      persistentFooterButtons: _filteredWords.isNotEmpty
+          ? [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FloatingActionButton(
+                    onPressed: () {
+                      _clearFilter();
+                    },
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    elevation: 2.0,
+                    child: const Icon(
+                      Icons.clear,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+            ]
+          : null,
+    );
+  }
+
+  Widget _buildWordList(List<Word> words) {
+    return NotificationListener<ScrollNotification>(
+      onNotification: (scrollNotification) {
+        if (scrollNotification is ScrollEndNotification) {
+          if (_scrollController.offset >= 200) {
+            setState(() {
+              _showArrowUpButton = true;
+            });
+          } else {
+            setState(() {
+              _showArrowUpButton = false;
+            });
+          }
+        }
+        return true;
+      },
+      child: ListView.builder(
+        controller: _scrollController,
+        itemCount: words.length,
+        itemBuilder: (context, index) {
+          final word = words[index];
+          final meanings = _meaningsList[index];
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: WordComponent(
+              word: word,
+              meanings: meanings,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return WordPage(meanings: meanings, words: word);
+                    },
+                  ),
+                );
+              },
+            ),
+          );
+        },
+      ),
     );
   }
 }

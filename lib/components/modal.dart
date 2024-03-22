@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-void ShowFilterModal(BuildContext context) {
+
+void ShowFilterModal(BuildContext context, Function(String) filterFunction) {
   TextEditingController searchController = TextEditingController();
   TextEditingController filterController = TextEditingController();
-
   showModalBottomSheet(
-    isScrollControlled: true, // Define como true para permitir que o modal seja rolado quando o teclado estiver ativo
+    isScrollControlled:
+        true, // Define como true para permitir que o modal seja rolado quando o teclado estiver ativo
     context: context,
     builder: (BuildContext context) {
       return LayoutBuilder(
@@ -12,7 +13,8 @@ void ShowFilterModal(BuildContext context) {
           return SingleChildScrollView(
             child: Container(
               padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom + 20, // Adiciona espaço adicional para o teclado
+                bottom: MediaQuery.of(context).viewInsets.bottom +
+                    20, // Adiciona espaço adicional para o teclado
                 top: 16, // Padding no topo do modal
               ),
               child: Column(
@@ -86,7 +88,11 @@ void ShowFilterModal(BuildContext context) {
                     child: SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          filterFunction(searchController.text); 
+                          
+                          Navigator.pop(context);
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
                           padding: const EdgeInsets.symmetric(vertical: 20),
