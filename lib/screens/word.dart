@@ -7,9 +7,14 @@ import 'package:waiwai_dictionary/components/sidebarNotLogged.dart';
 import 'package:waiwai_dictionary/models/wordModels.dart';
 
 class WordPage extends StatefulWidget {
- 
+  final List<Meaning> meanings;
+  final Word words;
 
-  const WordPage({Key? key, required List<Meaning> meanings}) : super(key: key);
+  const WordPage({
+    Key? key,
+    required this.meanings,
+    required this.words,
+  }) : super(key: key);
 
   @override
   State<WordPage> createState() => _WordPageState();
@@ -41,12 +46,12 @@ class _WordPageState extends State<WordPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 10),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
                         child: Text(
-                          'Palavra',
+                          widget.words.word,
                           textAlign: TextAlign.start,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
@@ -56,20 +61,12 @@ class _WordPageState extends State<WordPage> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 3,
-                              blurRadius: 7,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Padding(
-                              padding: EdgeInsets.only(left: 8.0),
+                              padding: EdgeInsets.only(left: 20),
                               child: Text(
                                 "Significado(s)",
                                 style: TextStyle(
@@ -78,7 +75,36 @@ class _WordPageState extends State<WordPage> {
                                 ),
                               ),
                             ),
-                            
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: widget.meanings.length,
+                              itemBuilder: (context, index) {
+                                final meaning = widget.meanings[index];
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(20),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 3,
+                                          blurRadius: 7,
+                                          offset: const Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: MyExpantionTile(
+                                      significado: meaning.meaning,
+                                      fonema: '${widget.words.phonemic}',
+                                      meaning: meaning,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ],
                         ),
                       ),
@@ -98,11 +124,9 @@ class _WordPageState extends State<WordPage> {
                             ),
                           ],
                         ),
-                        child: Column(
+                        child: const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            
-                          ],
+                          children: [],
                         ),
                       ),
                     ],

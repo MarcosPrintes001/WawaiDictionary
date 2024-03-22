@@ -6,14 +6,12 @@ class DatabaseHelper {
   Database? _database;
 
   Future<Database> get database async {
-    if (_database == null) {
-      _database = await _initDatabase();
-    }
+    _database ??= await _initDatabase();
     return _database!;
   }
 
   Future<Database> _initDatabase() async {
-    String path = join(await getDatabasesPath(), 'your_database.db');
+    String path = join(await getDatabasesPath(), 'dictionay.db');
     return await openDatabase(
       path,
       version: 1,
@@ -82,7 +80,7 @@ class DatabaseHelper {
       where: 'id = ?',
       whereArgs: [id],
     );
-    if (maps.length > 0) {
+    if (maps.isNotEmpty) {
       return Word.fromJson(maps.first);
     }
     throw Exception('Word not found');
@@ -100,7 +98,7 @@ class DatabaseHelper {
       where: 'id = ?',
       whereArgs: [id],
     );
-    if (maps.length > 0) {
+    if (maps.isNotEmpty) {
       return Reference.fromJson(maps.first);
     }
     throw Exception('Reference not found');

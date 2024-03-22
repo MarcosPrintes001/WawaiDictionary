@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:waiwai_dictionary/models/wordModels.dart';
 import 'package:waiwai_dictionary/services/bd.dart';
 
-String urlBase = 'http://10.12.32.233:3001/';
+String urlBase = 'http://192.168.1.110:3001/';
 
 // Definindo um tipo de função de retorno de chamada para atualização de progresso
 typedef ProgressCallback = void Function(double);

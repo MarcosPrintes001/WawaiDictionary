@@ -61,8 +61,7 @@ class _SideBarLoggedState extends State<SideBarLogged> {
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    const Text(
-                        'Estamos baixando novos dados, por favor, aguarde...'),
+                    const Text('Estamos baixando novos dados, por favor, aguarde e não feche o app.'),
                     const SizedBox(height: 20),
                     StreamBuilder<double>(
                       stream: progressStream.stream,

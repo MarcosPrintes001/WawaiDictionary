@@ -112,22 +112,19 @@ class _HomePageState extends State<HomePage> {
                     itemBuilder: (context, index) {
                       final word = _words[index];
                       final meanings = _meaningsList[index];
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: WordComponent(
-                          word: word,
-                          meanings: meanings,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return WordPage(meanings: meanings);
-                                },
-                              ),
-                            );
-                          },
-                        ),
+                      return WordComponent(
+                        word: word,
+                        meanings: meanings,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return WordPage(meanings: meanings, words: word);
+                              },
+                            ),
+                          );
+                        },
                       );
                     },
                   ),
