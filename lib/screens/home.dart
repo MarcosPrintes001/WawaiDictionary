@@ -104,7 +104,16 @@ class _HomePageState extends State<HomePage> {
       drawer: _isLoggedIn ? const SideBarLogged() : const SideBarNotLogged(),
       body: _isLoading
           ? const Center(
-              child: CircularProgressIndicator(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text("Organiazdando as palavras aguarde...")
+                ],
+              ),
             )
           : _filteredWords.isNotEmpty
               ? _buildWordList(_filteredWords)

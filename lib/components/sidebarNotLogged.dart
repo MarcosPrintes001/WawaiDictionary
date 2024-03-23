@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: file_names, use_build_context_synchronously
 
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -44,7 +44,6 @@ class SideBarNotLogged extends StatelessWidget {
     }
 
     getWords(BuildContext context) async {
-      // Exibe o AlertDialog com uma barra de progresso
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -124,7 +123,7 @@ class SideBarNotLogged extends StatelessWidget {
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text('Erro'),
-              content: Text('Ocorreu um erro durante o download dos dados: $e'),
+              content: SingleChildScrollView(child: Text('Ocorreu um erro durante o download dos dados: $e')),
               actions: <Widget>[
                 TextButton(
                   child: const Text('OK'),

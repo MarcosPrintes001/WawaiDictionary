@@ -1,7 +1,6 @@
 // ignore_for_file: file_names, use_build_context_synchronously
 
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,8 +19,6 @@ class SideBarLogged extends StatefulWidget {
 }
 
 class _SideBarLoggedState extends State<SideBarLogged> {
-  String user = "Marcos";
-
   @override
   Widget build(BuildContext context) {
     logout() async {
@@ -49,7 +46,6 @@ class _SideBarLoggedState extends State<SideBarLogged> {
     }
 
     getWords(BuildContext context) async {
-      // Exibe o AlertDialog com uma barra de progresso
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -61,7 +57,8 @@ class _SideBarLoggedState extends State<SideBarLogged> {
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    const Text('Estamos baixando novos dados, por favor, aguarde e não feche o app.'),
+                    const Text(
+                        'Estamos baixando novos dados, por favor, aguarde e não feche o app.'),
                     const SizedBox(height: 20),
                     StreamBuilder<double>(
                       stream: progressStream.stream,
@@ -94,7 +91,6 @@ class _SideBarLoggedState extends State<SideBarLogged> {
           progressStream.add(progress);
 
           if (progress == 1.0) {
-            // Quando o download for concluído, exibe um novo diálogo informando que os dados foram baixados com sucesso
             Navigator.of(context).pop();
             showDialog(
               context: context,
@@ -129,7 +125,9 @@ class _SideBarLoggedState extends State<SideBarLogged> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text('Erro'),
-              content: Text('Ocorreu um erro durante o download dos dados: $e'),
+              content: SingleChildScrollView(
+                child: Text('Ocorreu um erro durante o download dos dados: $e'),
+              ),
               actions: <Widget>[
                 TextButton(
                   child: const Text('OK'),
@@ -206,9 +204,9 @@ class _SideBarLoggedState extends State<SideBarLogged> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SidebarButton(
+                    const SidebarButton(
                       onTap: null,
-                      text: "Bem-Vindo $user",
+                      text: "Bem-Vindo Usuáio",
                       icone: FontAwesomeIcons.circleUser,
                     ),
                     SidebarButton(
