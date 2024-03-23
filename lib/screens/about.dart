@@ -52,7 +52,13 @@ class _SobreState extends State<Sobre> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const Divider(),
+                  const Padding(
+                    padding: EdgeInsets.only(
+                      left: 20,
+                      right: 20,
+                    ),
+                    child: Divider(),
+                  ),
                   const Text(
                     "Equipe",
                     style: TextStyle(fontFamily: "Nee"),
