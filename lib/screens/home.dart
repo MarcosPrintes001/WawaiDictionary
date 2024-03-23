@@ -111,8 +111,17 @@ class _HomePageState extends State<HomePage> {
               : _words.isNotEmpty
                   ? _buildWordList(_words)
                   : const Center(
-                      child: Text(
-                          'Clique no botão "atualizar" da barra\nlateral para carregar as palavras do banco'),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image(
+                            image: AssetImage('assets/words_not_found.png'),
+                          ),
+                          SizedBox(
+                            height: 50,
+                          ),
+                        ],
+                      ),
                     ),
       floatingActionButton: _showArrowUpButton
           ? Row(
