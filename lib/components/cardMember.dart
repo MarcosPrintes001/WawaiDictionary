@@ -27,7 +27,7 @@ class TeamPage extends StatelessWidget {
       imageMember: 'assets/marcos.png',
     ),
     TeamMember(
-      name: 'Rui Haryama',
+      name: 'Rui Harayama',
       role: 'Colaborador',
       imageMember: 'assets/rui.png',
     ),
