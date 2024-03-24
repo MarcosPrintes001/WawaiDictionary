@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:waiwai_dictionary/models/wordModels.dart';
+import 'package:waiwai_dictionary/services/bd.dart';
 
 class MyExpantionTile extends StatefulWidget {
   final String significado;
@@ -20,8 +21,37 @@ class MyExpantionTile extends StatefulWidget {
 }
 
 class _MyExpantionTileState extends State<MyExpantionTile> {
+  String referenceName = '';
+
+  @override
+  void initState() {
+    super.initState();
+    // Chama a função para obter o nome da referência
+    getReferenceName();
+  }
+
+  void getReferenceName() async {
+    try {
+      String name = await DatabaseHelper()
+          .getReferenceNameById(widget.meaning.referenceId);
+      setState(() {
+        referenceName = name;
+      });
+    } catch (e) {
+      setState(() {
+        referenceName = 'Erro: $e';
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    String displayedName =
+        referenceName.isNotEmpty ? referenceName : 'Carregando...';
+    displayedName = displayedName.length > 30
+        ? '${displayedName.substring(0, 30)}...'
+        : displayedName;
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -41,9 +71,9 @@ class _MyExpantionTileState extends State<MyExpantionTile> {
         ),
         child: ExpansionTile(
           title: Text(
-            '${widget.meaning.referenceId}',
+            displayedName,
             style: const TextStyle(
-              fontSize: 24,
+              fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
           ),

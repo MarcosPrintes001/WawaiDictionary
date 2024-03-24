@@ -11,11 +11,25 @@ import 'package:waiwai_dictionary/services/api.dart';
 
 final StreamController<double> progressStream = StreamController<double>();
 
-class SideBarNotLogged extends StatelessWidget {
+class SideBarNotLogged extends StatefulWidget {
   const SideBarNotLogged({super.key});
 
   @override
+  State<SideBarNotLogged> createState() => _SideBarNotLoggedState();
+}
+
+class _SideBarNotLoggedState extends State<SideBarNotLogged> {
+  @override
+  void dispose() {
+    progressStream.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final StreamController<double> progressStream =
+        StreamController<double>.broadcast();
+
     callLogin() {
       Navigator.push(
         context,
@@ -55,7 +69,8 @@ class SideBarNotLogged extends StatelessWidget {
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    const Text('Estamos baixando novos dados, por favor, aguarde e não feche o app.'),
+                    const Text(
+                        'Estamos baixando novos dados, por favor, aguarde e não feche o app.'),
                     const SizedBox(height: 20),
                     StreamBuilder<double>(
                       stream: progressStream.stream,
@@ -123,7 +138,9 @@ class SideBarNotLogged extends StatelessWidget {
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text('Erro'),
-              content: SingleChildScrollView(child: Text('Ocorreu um erro durante o download dos dados: $e')),
+              content: SingleChildScrollView(
+                  child:
+                      Text('Ocorreu um erro durante o download dos dados: $e')),
               actions: <Widget>[
                 TextButton(
                   child: const Text('OK'),

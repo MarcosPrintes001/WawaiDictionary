@@ -91,17 +91,22 @@ class DatabaseHelper {
     return await db.query('ReferencesTable');
   }
 
-  Future<Reference> getReferenceById(int id) async {
-    Database db = await database;
-    List<Map<String, dynamic>> maps = await db.query(
-      'ReferencesTable',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
-    if (maps.isNotEmpty) {
-      return Reference.fromJson(maps.first);
+  Future<String> getReferenceNameById(int id) async {
+    try {
+      Database db = await database;
+      List<Map<String, dynamic>> maps = await db.query(
+        'ReferencesTable',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      if (maps.isNotEmpty) {
+        return maps.first['reference'];
+      } else {
+        return 'Referência Indisponível';
+      }
+    } catch (e) {
+      return 'Erro ao buscar referência: $e';
     }
-    throw Exception('Reference not found');
   }
 
   Future<List<Map<String, dynamic>>> getMeanings() async {
