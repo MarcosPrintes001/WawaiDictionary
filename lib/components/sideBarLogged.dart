@@ -20,7 +20,17 @@ class SideBarLogged extends StatefulWidget {
 
 class _SideBarLoggedState extends State<SideBarLogged> {
   @override
+  void dispose() {
+    progressStream.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+
+    final StreamController<double> progressStream =
+        StreamController<double>.broadcast();
+
     logout() async {
       //usuario vai remover o token do local storage
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -45,7 +55,7 @@ class _SideBarLoggedState extends State<SideBarLogged> {
       );
     }
 
-    getWords(BuildContext context) async {
+     getWords(BuildContext context) async {
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -91,6 +101,7 @@ class _SideBarLoggedState extends State<SideBarLogged> {
           progressStream.add(progress);
 
           if (progress == 1.0) {
+            // Quando o download for concluído, exibe um novo diálogo informando que os dados foram baixados com sucesso
             Navigator.of(context).pop();
             showDialog(
               context: context,
@@ -126,8 +137,8 @@ class _SideBarLoggedState extends State<SideBarLogged> {
             return AlertDialog(
               title: const Text('Erro'),
               content: SingleChildScrollView(
-                child: Text('Ocorreu um erro durante o download dos dados: $e'),
-              ),
+                  child:
+                      Text('Ocorreu um erro durante o download dos dados: $e')),
               actions: <Widget>[
                 TextButton(
                   child: const Text('OK'),

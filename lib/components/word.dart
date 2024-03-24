@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:waiwai_dictionary/models/wordModels.dart';
 
-class WordComponent extends StatelessWidget {
+class WordComponent extends StatefulWidget {
   final VoidCallback onTap;
   final Word word;
   final List<Meaning> meanings;
@@ -14,8 +14,19 @@ class WordComponent extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<WordComponent> createState() => _WordComponentState();
+}
+
+class _WordComponentState extends State<WordComponent> {
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
-    String firstMeaning = meanings.isNotEmpty ? meanings.first.meaning : "";
+    String firstMeaning = widget.meanings.isNotEmpty ? widget.meanings.first.meaning : "";
 
     // Limitar o primeiro significado a 30 caracteres
     if (firstMeaning.length > 30) {
@@ -23,7 +34,7 @@ class WordComponent extends StatelessWidget {
     }
 
     return GestureDetector(
-      onTap: onTap,
+      onTap: widget.onTap,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -35,7 +46,7 @@ class WordComponent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              word.word,
+              widget.word.word,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20.0,

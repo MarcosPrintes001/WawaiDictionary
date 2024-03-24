@@ -141,15 +141,25 @@ class _HomePageState extends State<HomePage> {
                   child: AnimatedOpacity(
                     opacity: _showArrowUpButton ? 1.0 : 0.0,
                     duration: const Duration(milliseconds: 500),
-                    child: FloatingActionButton(
-                      onPressed: () {
-                        ShowFilterModal(context, _filterWords);
-                      },
-                      child: const Icon(
-                        Icons.filter_list,
-                        color: Colors.black,
-                      ),
-                    ),
+                    child: _filteredWords.isEmpty
+                        ? FloatingActionButton(
+                            onPressed: () {
+                              ShowFilterModal(context, _filterWords);
+                            },
+                            child: const Icon(
+                              Icons.filter_list,
+                              color: Colors.black,
+                            ),
+                          )
+                        : FloatingActionButton(
+                            onPressed: () {
+                              _clearFilter();
+                            },
+                            child: const Icon(
+                              Icons.filter_list_off,
+                              color: Colors.black,
+                            ),
+                          ),
                   ),
                 ),
                 FloatingActionButton(
@@ -167,37 +177,25 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             )
-          : FloatingActionButton(
-              onPressed: () {
-                ShowFilterModal(context, _filterWords);
-              },
-              child: const Icon(
-                Icons.filter_list,
-                color: Colors.black,
-              ),
-            ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      persistentFooterButtons: _filteredWords.isNotEmpty
-          ? [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FloatingActionButton(
-                    onPressed: () {
-                      _clearFilter();
-                    },
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                    elevation: 2.0,
-                    child: const Icon(
-                      Icons.clear,
-                      color: Colors.black,
-                    ),
+          : _filteredWords.isEmpty
+              ? FloatingActionButton(
+                  onPressed: () {
+                    ShowFilterModal(context, _filterWords);
+                  },
+                  child: const Icon(
+                    Icons.filter_list,
+                    color: Colors.black,
                   ),
-                ],
-              ),
-            ]
-          : null,
+                )
+              : FloatingActionButton(
+                  onPressed: () {
+                    _clearFilter();
+                  },
+                  child: const Icon(
+                    Icons.filter_list_off,
+                    color: Colors.black,
+                  ),
+                ),
     );
   }
 

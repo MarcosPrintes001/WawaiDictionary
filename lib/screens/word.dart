@@ -24,6 +24,12 @@ class _WordPageState extends State<WordPage> {
   bool _isLoggedIn = false;
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _checkLoginStatus();
     return Scaffold(

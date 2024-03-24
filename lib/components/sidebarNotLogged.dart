@@ -19,6 +19,7 @@ class SideBarNotLogged extends StatefulWidget {
 }
 
 class _SideBarNotLoggedState extends State<SideBarNotLogged> {
+  
   @override
   void dispose() {
     progressStream.close();
