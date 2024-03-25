@@ -33,7 +33,7 @@ class _WordPageState extends State<WordPage> {
   Widget build(BuildContext context) {
     _checkLoginStatus();
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: const Color(0xFFF2F2F2),
       appBar: MyAppBar(),
       drawer: _isLoggedIn ? const SideBarLogged() : const SideBarNotLogged(),
       body: ListView(

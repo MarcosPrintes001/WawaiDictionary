@@ -27,7 +27,6 @@ class _SideBarLoggedState extends State<SideBarLogged> {
 
   @override
   Widget build(BuildContext context) {
-
     final StreamController<double> progressStream =
         StreamController<double>.broadcast();
 
@@ -55,7 +54,7 @@ class _SideBarLoggedState extends State<SideBarLogged> {
       );
     }
 
-     getWords(BuildContext context) async {
+    getWords(BuildContext context) async {
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -68,7 +67,7 @@ class _SideBarLoggedState extends State<SideBarLogged> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     const Text(
-                        'Estamos baixando novos dados, por favor, aguarde e não feche o app.'),
+                        'Estamos atualizando sua base. Por favor, aguarde e não feche o aplicativo!'),
                     const SizedBox(height: 20),
                     StreamBuilder<double>(
                       stream: progressStream.stream,

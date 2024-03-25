@@ -19,7 +19,6 @@ class SideBarNotLogged extends StatefulWidget {
 }
 
 class _SideBarNotLoggedState extends State<SideBarNotLogged> {
-  
   @override
   void dispose() {
     progressStream.close();
@@ -71,7 +70,7 @@ class _SideBarNotLoggedState extends State<SideBarNotLogged> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     const Text(
-                        'Estamos baixando novos dados, por favor, aguarde e não feche o app.'),
+                        'Estamos atualizando sua base. Por favor, aguarde e não feche o aplicativo!'),
                     const SizedBox(height: 20),
                     StreamBuilder<double>(
                       stream: progressStream.stream,

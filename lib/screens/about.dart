@@ -22,7 +22,7 @@ class _SobreState extends State<Sobre> {
     _checkLoginStatus(); // Verificar o status de login ao construir a página
 
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: const Color(0xFFF2F2F2),
       appBar: MyAppBar(),
       drawer: _isLoggedIn ? const SideBarLogged() : const SideBarNotLogged(),
       body: SingleChildScrollView(

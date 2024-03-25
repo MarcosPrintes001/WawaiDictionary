@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 MyAppBar() {
   return AppBar(
     centerTitle: true,
-    backgroundColor: Colors.grey[200],
+    backgroundColor: const Color(0xFFF2F2F2),
     title: const Image(
       image: AssetImage("assets/dicName.png"),
       height: 120,

@@ -67,22 +67,25 @@ class _HomePageState extends State<HomePage> {
       _isLoading = true; // Mostrar indicador de progresso
     });
 
-    final meanings = await _databaseHelper.getMeanings();
-    final wordIds =
-        meanings.map<int>((meaning) => meaning['word_id'] as int).toSet();
+    if (_meaningsList.isEmpty) {
+      final meanings = await _databaseHelper.getMeanings();
+      final wordIds =
+          meanings.map<int>((meaning) => meaning['word_id'] as int).toSet();
 
-    _words = await Future.wait(
-        wordIds.map((wordId) => _databaseHelper.getWordById(wordId)));
+      _words = await Future.wait(
+          wordIds.map((wordId) => _databaseHelper.getWordById(wordId)));
 
-    _words.sort((a, b) => a.word.toLowerCase().compareTo(b.word.toLowerCase()));
+      _words
+          .sort((a, b) => a.word.toLowerCase().compareTo(b.word.toLowerCase()));
 
-    _meaningsList = List.generate(_words.length, (index) {
-      final wordId = _words[index].id;
-      return meanings
-          .where((meaning) => meaning['word_id'] == wordId)
-          .map((meaning) => Meaning.fromJson(meaning))
-          .toList();
-    });
+      _meaningsList = List.generate(_words.length, (index) {
+        final wordId = _words[index].id;
+        return meanings
+            .where((meaning) => meaning['word_id'] == wordId)
+            .map((meaning) => Meaning.fromJson(meaning))
+            .toList();
+      });
+    }
 
     setState(() {
       _isLoading = false;
@@ -99,7 +102,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: const Color(0xFFF2F2F2),
       appBar: MyAppBar(),
       drawer: _isLoggedIn ? const SideBarLogged() : const SideBarNotLogged(),
       body: _isLoading
@@ -111,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     height: 20,
                   ),
-                  Text("Organiazdando as palavras aguarde...")
+                  Text("Organizando as palavras...")
                 ],
               ),
             )
