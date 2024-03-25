@@ -70,7 +70,7 @@ class _SideBarNotLoggedState extends State<SideBarNotLogged> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     const Text(
-                        'Estamos atualizando sua base. Por favor, aguarde e não feche o aplicativo!'),
+                        'Por favor, aguarde e não feche o aplicativo!\nEstamos atualizando sua base.'),
                     const SizedBox(height: 20),
                     StreamBuilder<double>(
                       stream: progressStream.stream,
