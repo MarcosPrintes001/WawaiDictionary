@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _isLoading = true; // Mostrar indicador de progresso
     });
-
+    
     if (_meaningsList.isEmpty) {
       final meanings = await _databaseHelper.getMeanings();
       final wordIds =
@@ -88,6 +88,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     setState(() {
+      _meaningsList = _meaningsList;
       _isLoading = false;
     });
   }
