@@ -40,17 +40,30 @@ class DatabaseHelper {
   ''');
 
     await db.execute('''
-  CREATE TABLE IF NOT EXISTS MeaningsTable(
-    id INTEGER PRIMARY KEY,
-    meaning TEXT,
-    comment TEXT,
-    word_id INTEGER,
-    reference_id INTEGER,
-    user_id INTEGER,
-    FOREIGN KEY (word_id) REFERENCES Words(id),
-    FOREIGN KEY (reference_id) REFERENCES "References"(id)
-  )
-''');
+      CREATE TABLE IF NOT EXISTS MeaningsTable(
+        id INTEGER PRIMARY KEY,
+        meaning TEXT,
+        comment TEXT,
+        word_id INTEGER,
+        reference_id INTEGER,
+        user_id INTEGER,
+        FOREIGN KEY (word_id) REFERENCES Words(id),
+        FOREIGN KEY (reference_id) REFERENCES "References"(id)
+      )
+    ''');
+
+    await db.execute('''
+    CREATE TABLE IF NOT EXISTS VersionTable(
+      id INTEGER PRIMARY KEY,
+      meaning TEXT,
+      comment TEXT,
+      word_id INTEGER,
+      reference_id INTEGER,
+      user_id INTEGER,
+      FOREIGN KEY (word_id) REFERENCES Words(id),
+      FOREIGN KEY (reference_id) REFERENCES "References"(id)
+    )
+    ''');
   }
 
   Future<int> insertWord(Word word) async {
@@ -71,6 +84,41 @@ class DatabaseHelper {
   Future<List<Map<String, dynamic>>> getWords() async {
     Database db = await database;
     return await db.query('Words');
+  }
+
+  Future<int> getWordCount() async {
+    Database db = await database;
+
+    var result = await db.rawQuery('SELECT COUNT(1) as total FROM Words');
+
+    var totalResult = result.first;
+
+    return totalResult['total'] as int;
+  }
+
+  Future<List<Word>> getWordPage(
+      {String q = '', int page = 1, int size = 50}) async {
+    int offset = (page - 1) * size;
+    int limit = size;
+
+    Database db = await database;
+    List<Map<String, dynamic>> maps;
+    if (q.isNotEmpty) {
+      q = '%$q%';
+      maps = await db.query('Words',
+          offset: offset, limit: limit, where: 'word like ?', whereArgs: [q]);
+    } else {
+      maps = await db.query(
+        'Words',
+        offset: offset,
+        limit: limit,
+      );
+    }
+    List<Word> resultados = [];
+    for (var e in maps) {
+      resultados.add(Word.fromJson(e));
+    }
+    return resultados;
   }
 
   Future<Word> getWordById(int id) async {

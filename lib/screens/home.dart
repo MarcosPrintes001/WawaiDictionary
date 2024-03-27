@@ -23,9 +23,11 @@ class _HomePageState extends State<HomePage> {
   bool _showArrowUpButton = false;
   bool _isLoggedIn = false;
   late DatabaseHelper _databaseHelper;
-  bool _isLoading = false;
+  bool _isLoadingList = false;
+  bool _isLoadingWordsPage = false;
   List<Word> _filteredWords = [];
   List<Word> _words = [];
+
   List<List<Meaning>> _meaningsList = [];
 
   @override
@@ -34,6 +36,7 @@ class _HomePageState extends State<HomePage> {
     _databaseHelper = DatabaseHelper();
     _checkLoginStatus();
     _loadWords();
+    _laodfirst();
     _scrollController.addListener(() {
       if (_scrollController.offset >= 200) {
         setState(() {
@@ -45,6 +48,28 @@ class _HomePageState extends State<HomePage> {
         });
       }
     });
+
+    _scrollController.addListener(() {
+      var maxScrollExtends = _scrollController.position.maxScrollExtent;
+      var scrolledPixels = _scrollController.position.pixels;
+
+      if (scrolledPixels == maxScrollExtends) {
+        _loadDataByPage();
+      }
+    });
+  }
+
+  void _laodfirst() {}
+
+  Future<void> _loadDataByPage() async {
+    setState(() {
+      _isLoadingWordsPage = true;
+    });
+    await Future.delayed(const Duration(seconds: 5));
+
+    setState(() {
+      _isLoadingWordsPage = true;
+    });
   }
 
   void _clearFilter() {
@@ -53,21 +78,20 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _filterWords(String query) {
+  Future<void> _filterWords(String query) async {
+    var filteredWords = await _databaseHelper.getWordPage(q: query);
     setState(() {
-      _filteredWords = _words
-          .where(
-              (word) => word.word.toLowerCase().contains(query.toLowerCase()))
-          .toList();
+      _filteredWords = filteredWords;
     });
   }
 
   void _loadWords() async {
     setState(() {
-      _isLoading = true; // Mostrar indicador de progresso
+      _isLoadingList = true;
     });
 
     if (_meaningsList.isEmpty) {
+      
       final meanings = await _databaseHelper.getMeanings();
       final wordIds =
           meanings.map<int>((meaning) => meaning['word_id'] as int).toSet();
@@ -88,7 +112,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     setState(() {
-      _isLoading = false;
+      _isLoadingList = false;
     });
   }
 
@@ -105,7 +129,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: const Color(0xFFF2F2F2),
       appBar: MyAppBar(),
       drawer: _isLoggedIn ? const SideBarLogged() : const SideBarNotLogged(),
-      body: _isLoading
+      body: _isLoadingList
           ? const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -202,7 +226,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildWordList(List<Word> words) {
+  Widget _buildWordList(List words) {
     return NotificationListener<ScrollNotification>(
       onNotification: (scrollNotification) {
         if (scrollNotification is ScrollEndNotification) {
@@ -224,6 +248,12 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (context, index) {
           final word = words[index];
           final meanings = _meaningsList[index];
+          if (index == words.length && _isLoadingWordsPage) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: WordComponent(
